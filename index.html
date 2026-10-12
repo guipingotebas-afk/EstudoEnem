@@ -1,0 +1,1834 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Trilha ENEM</title>
+  <style>
+    /* Estilos simples: cores, espaços e telas pequenas. */
+    :root{--verde:#174a3a;--verde-claro:#e8efe7;--papel:#f7f5ef;--branco:#fffefa;--texto:#26372d;--cinza:#69756d;--linha:#dfded5;--areia:#f2e8d4;--coral:#bf7653}
+    *{box-sizing:border-box}body{margin:0;background:var(--papel);color:var(--texto);font:16px/1.55 Arial,Helvetica,sans-serif}
+    button,input,select,textarea{font:inherit}button{cursor:pointer}button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid #d49a35;outline-offset:2px}
+    header{padding:14px max(calc((100% - 1000px)/2),20px);border-bottom:1px solid var(--linha);background:var(--papel)}
+    .marca{display:flex;align-items:center;gap:9px;color:var(--verde);font-size:18px;font-weight:bold}.marca-icone{display:grid;place-items:center;width:36px;height:36px;border-radius:11px;background:var(--verde);color:white;font-family:Georgia,serif;font-size:22px}
+    main{width:min(1000px,calc(100% - 32px));min-height:70vh;margin:30px auto 55px}
+    h1,h2{font-family:Georgia,'Times New Roman',serif;font-weight:normal}h1{font-size:clamp(32px,6vw,48px);line-height:1.12;margin:10px 0 12px}h1 em{color:var(--coral)}h2{font-size:29px;margin:8px 0 15px}h3{font-size:17px;margin:0 0 8px}p{margin:0 0 14px}.suave{color:var(--cinza)}.etiqueta{color:#718575;font-size:11px;font-weight:bold;letter-spacing:.12em;text-transform:uppercase}
+    .capa{display:grid;grid-template-columns:1.2fr .8fr;gap:20px;align-items:center;min-height:275px;padding:clamp(22px,5vw,48px);background:linear-gradient(120deg,#eee8da,#e4ece2);border-radius:8px}.capa p{max-width:500px;color:#5d6b60}.desenho{display:grid;place-items:center;min-height:150px;color:var(--verde)}.selo{display:grid;place-items:center;width:175px;height:175px;border:1px solid #91a891;border-radius:50%;font-size:12px;letter-spacing:.12em;text-align:center}.selo strong{font:20px Georgia,serif;letter-spacing:0}
+    .botoes-iniciais{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:22px}.botao-grande{min-height:160px;padding:24px;text-align:left;border:1px solid var(--linha);border-radius:7px;color:var(--texto);background:var(--branco);transition:.18s}.botao-grande:hover,.cartao-botao:hover{transform:translateY(-2px);border-color:#9eb49c}.botao-grande:first-child{background:#f2e8de}.botao-grande:last-child{background:var(--verde-claro)}.botao-grande strong{display:block;margin:10px 0;font:24px Georgia,serif}.botao-grande small{color:var(--cinza)}
+    .cartao{padding:22px;background:var(--branco);border:1px solid var(--linha);border-radius:7px}.grade-dois{display:grid;grid-template-columns:1fr 1fr;gap:13px;margin-top:20px}.cartao-botao{min-height:112px;padding:18px;text-align:left;background:var(--branco);border:1px solid var(--linha);border-radius:6px;transition:.18s}.cartao-botao strong{display:block;margin:7px 0}.lista-materias{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:16px}.materia-botao,.tema-botao{min-height:66px;padding:12px;text-align:left;background:var(--branco);border:1px solid var(--linha);border-radius:5px;color:var(--texto)}.materia-botao:hover,.tema-botao:hover{border-color:#9eb49c;background:var(--verde-claro)}
+    .voltar{margin:0 0 18px;padding:7px 0;color:var(--cinza);background:none;border:0}.botoes{display:flex;flex-wrap:wrap;gap:9px;margin-top:18px}.principal,.secundario,.botao-ano{min-height:43px;padding:9px 14px;border-radius:5px;font-weight:bold}.principal{color:white;background:var(--verde);border:0}.principal:hover{background:#123c31}.secundario,.botao-ano{color:var(--verde);background:white;border:1px solid #cbd7cb}.secundario:hover,.botao-ano:hover,.botao-ano.ativo{background:var(--verde-claro)}
+    .anos{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0}.campo{display:grid;gap:6px;margin:14px 0}.campo label{font-size:13px;font-weight:bold}.campo select,.campo input{max-width:420px;min-height:42px;padding:8px;border:1px solid var(--linha);border-radius:5px;background:white}
+    .nota{margin-top:18px;padding:13px;background:#f1efe7;border-left:3px solid #cda55c;color:#6b746b;font-size:13px}.linha-materia{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 13px;border-top:1px solid #eeece5}.linha-materia input{width:64px;padding:6px;border:1px solid var(--linha);border-radius:4px}.linha-materia small{display:block;color:#7d877e;font-size:11px}
+    .barra-progresso{margin:12px 0;color:var(--cinza);font-size:13px}.questao{max-width:780px;padding:clamp(18px,4vw,30px)}.enunciado{white-space:pre-wrap;margin-top:12px;font:16px/1.7 Georgia,serif}.alternativas{display:grid;gap:9px;margin-top:18px}.alternativa{display:flex;align-items:flex-start;gap:10px;width:100%;min-height:50px;padding:10px;text-align:left;line-height:1.5;background:white;color:var(--texto);border:1px solid var(--linha);border-radius:5px}.alternativa:hover{border-color:#9eb49c}.alternativa.selecionada{background:var(--verde-claro);border-color:#78977b}.alternativa.certa{background:#eaf3ea;border-color:#79a485}.alternativa.errada{background:#f9eeea;border-color:#d2927e}.letra{display:grid;place-items:center;flex:none;width:27px;height:27px;border:1px solid #dfe2d9;border-radius:50%;font-weight:bold}.explicacao{margin-top:16px;padding:14px;background:#edf3e9;border-radius:5px}.explicacao.erro{background:#fbf1e9}.resultado{text-align:center;max-width:600px;margin:25px auto}
+    .temas{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:17px}.tema-botao{min-height:115px}.tema-botao small{display:block;color:#718575;font-size:11px}.tema-botao strong{display:block;margin:6px 0}
+    .redacao-grid{display:grid;grid-template-columns:minmax(0,1fr) 290px;gap:17px;align-items:start}.texto-apoio{margin:10px 0;padding:14px;background:#f5f3eb;border-left:3px solid #8da48e}.texto-apoio h3{font-size:14px}.texto-apoio p{margin:0;color:#58665b;font:15px/1.6 Georgia,serif}.redacao textarea{width:100%;min-height:260px;padding:13px;border:1px solid var(--linha);border-radius:5px;resize:vertical;font:16px/1.7 Georgia,serif}.palavras{display:flex;flex-wrap:wrap;gap:7px}.palavras button{padding:7px 9px;color:#4e6d55;background:#f0f3eb;border:1px solid #dfe6dc;border-radius:18px;font-size:12px}.sinonimo-colunas{display:grid;grid-template-columns:1fr 1fr;gap:8px;align-items:start}.sinonimo-colunas input{width:100%;min-width:0;padding:8px;border:1px solid var(--linha);border-radius:4px}.sinonimo-colunas button{width:100%;margin-top:7px;padding:8px 5px;color:#59411e;background:var(--areia);border:0;border-radius:4px}.resultado-sinonimo{min-height:70px;padding-left:8px;border-left:1px solid var(--linha);font-size:12px}.resultado-sinonimo button{width:auto;margin:3px;padding:6px 8px;border:1px solid #cbd7cb;background:white;border-radius:16px;color:var(--verde)}
+    footer{width:min(1000px,calc(100% - 32px));margin:0 auto;padding:18px 0;border-top:1px solid var(--linha);color:#7d877e;font-size:12px}
+    @media(max-width:700px){header{padding:10px 16px}main{margin-top:18px}.capa{grid-template-columns:1fr}.desenho{min-height:60px;font-size:48px}.botoes-iniciais,.grade-dois,.redacao-grid{grid-template-columns:1fr}.botao-grande{min-height:125px}.lista-materias{grid-template-columns:repeat(2,1fr)}.temas{grid-template-columns:1fr}.redacao-grid aside{order:-1}}
+  </style>
+</head>
+<body>
+  <header><div class="marca"><span class="marca-icone">✎</span><span>trilha enem</span></div></header>
+  <main id="tela"></main>
+  <footer>As questões mostradas vêm de provas anteriores oficiais do ENEM. O acervo atual tem 56 questões (uma por matéria em cada ano de 2022 a 2025), não o caderno completo. As matérias são uma organização didática; o Inep publica as questões por áreas do conhecimento. As explicações e os textos de apoio são materiais deste site. <a href="https://www.gov.br/inep/pt-br/areas-de-atuacao/avaliacao-e-exames-educacionais/enem/provas-e-gabaritos" target="_blank" rel="noreferrer">Consultar provas e gabaritos oficiais do Inep</a>.</footer>
+
+  <script>
+    // 1. LISTAS DE DADOS
+    const materias = [
+      {id:"portugues",nome:"Língua Portuguesa",area:"Linguagens"},
+      {id:"literatura",nome:"Literatura",area:"Linguagens"},
+      {id:"artes",nome:"Artes",area:"Linguagens"},
+      {id:"educacao-fisica",nome:"Educação Física",area:"Linguagens"},
+      {id:"ingles",nome:"Língua Inglesa",area:"Linguagens"},
+      {id:"espanhol",nome:"Língua Espanhola",area:"Linguagens"},
+      {id:"historia",nome:"História",area:"Ciências Humanas"},
+      {id:"geografia",nome:"Geografia",area:"Ciências Humanas"},
+      {id:"filosofia",nome:"Filosofia",area:"Ciências Humanas"},
+      {id:"sociologia",nome:"Sociologia",area:"Ciências Humanas"},
+      {id:"biologia",nome:"Biologia",area:"Ciências da Natureza"},
+      {id:"quimica",nome:"Química",area:"Ciências da Natureza"},
+      {id:"fisica",nome:"Física",area:"Ciências da Natureza"},
+      {id:"matematica",nome:"Matemática",area:"Matemática"}
+    ];
+
+    // O sistema só pode mostrar questões copiadas de provas oficiais verificadas.
+    // Cada questão precisa ter: materia, ano, numero, prova, gabarito,
+    // enunciado, alternativas, correta, explicacaoCerta e explicacoesErradas.
+    const questoes = [
+  {
+    "materia": "portugues",
+    "ano": "2022",
+    "assunto": "1º dia da aplicação regular (13/11/2022) · Caderno 1 – Azul",
+    "numero": "30",
+    "prova": "https://download.inep.gov.br/enem/provas_e_gabaritos/2022_PV_impresso_D1_CD1.pdf",
+    "gabarito": "https://download.inep.gov.br/enem/provas_e_gabaritos/2022_GB_impresso_D1_CD1.pdf",
+    "enunciado": "A senhora manifestava-se por atos, por gestos, e sobretudo por um certo silêncio, que amargava, que esfolava. Porém desmoralizar escancaradamente o marido, não era com ela. [...]\n\nAs negras receberam ordem para meter no serviço a gente do tal compadre Silveira: as cunhadas, ao fuso; os cunhados, ao campo, tratar do gado com os vaqueiros; a mulher e as irmãs, que se ocupassem da ninhada. Margarida não tivera filhos, e como os desejasse com a força de suas vontades, tratava sempre bem aos pequenitos e às mães que os estavam criando. Não era isso uma sentimentalidade cristã, uma ternura, era o egoísta e cru instinto da maternidade, obrando por mera simpatia carnal. Quanto ao pai do lote (referia-se ao Antônio), esse que fosse ajudar ao vaqueiro das bestas.\n\nOrdens dadas, o Quinquim referendava. Cada um moralizava o outro, para moralizar-se.\n\nPAIVA, M. O. Dona Guidinha do Poço. Rio de Janeiro: Tecnoprint, s/d.\n\nNo trecho do romance naturalista, a forma como o narrador julga comportamentos e emoções das personagens femininas revela influência do pensamento",
+    "alternativas": [
+      "capitalista, marcado pela distribuição funcional do trabalho.",
+      "liberal, buscando a igualdade entre pessoas escravizadas e livres.",
+      "científico, considerando o ser humano como um fenômeno biológico.",
+      "religioso, fundamentado na fé e na aceitação dos dogmas do cristianismo.",
+      "afetivo, manifesto na determinação de acolher familiares e no respeito mútuo."
+    ],
+    "correta": 2,
+    "explicacaoCerta": "O narrador reduz a maternidade de Margarida a um “instinto” e a uma “simpatia carnal”, explicando os comportamentos por fatores biológicos. Essa perspectiva determinista é característica da influência do pensamento científico no Naturalismo.",
+    "explicacoesErradas": [
+      "O trecho não trata a organização do trabalho como princípio capitalista; a divisão das tarefas aparece como ação das personagens, não como tese do narrador.",
+      "Não há defesa de igualdade entre pessoas escravizadas e livres; a referência às pessoas negras situa uma relação social hierárquica.",
+      "",
+      "O narrador explicitamente nega que a atitude seja uma sentimentalidade cristã ou ternura religiosa.",
+      "A explicação é justamente oposta a uma leitura afetiva: o narrador chama a motivação de egoísta, crua e carnal."
+    ]
+  },
+  {
+    "materia": "portugues",
+    "ano": "2023",
+    "assunto": "1º dia da aplicação regular (05/11/2023) · Caderno 1 – Azul",
+    "numero": "38",
+    "prova": "https://download.inep.gov.br/enem/provas_e_gabaritos/2023_PV_impresso_D1_CD1.pdf",
+    "gabarito": "https://download.inep.gov.br/enem/provas_e_gabaritos/2023_GB_impresso_D1_CD1.pdf",
+    "enunciado": "O mais antigo grupo de rap indígena do país, Brô MCs, surgiu em 2009, na aldeia Jaguapiru, em Dourados, Mato Grosso do Sul. Os integrantes conheceram o rap pelo rádio, ouvindo um programa que apresentava cantores e grupos brasileiros desse gênero musical. O Brô MCs conseguiu influenciar outros a fazerem rap e a lutarem pelas causas indígenas. Um dos nomes do movimento, Kunumí MC, é um jovem de 16 anos, da aldeia Krukutu, em São Paulo. O adolescente enxerga o rap como uma cultura da defesa e começou a fazer rimas quando percebeu que a poesia, pela qual sempre se interessou, podia virar música. Nas letras que cria, inspiradas tanto pelo rap quanto pelos ritmos indígenas, tenta incluir sempre assuntos aos quais acha importante dar voz, principalmente, a questão da demarcação de terras.\n\nDisponível em: www.correiobraziliense.com.br. Acesso em: 13 nov. 2021 (adaptado).\n\nO movimento rap dos povos originários do Brasil revela o(a)",
+    "alternativas": [
+      "fusão de manifestações artísticas urbanas contemporâneas com a cultura indígena.",
+      "contraposição das temáticas socioambientais indígenas às questões urbanas.",
+      "rejeição da indústria radiofônica às músicas indígenas.",
+      "distanciamento da realidade social indígena.",
+      "estímulo ao estudo da poesia indígena."
+    ],
+    "correta": 0,
+    "explicacaoCerta": "O texto mostra que o rap, gênero musical contemporâneo de origem urbana, é apropriado e combinado com ritmos indígenas e com temas de defesa dos povos originários. Trata-se de uma fusão cultural, não de substituição de uma tradição pela outra.",
+    "explicacoesErradas": [
+      "",
+      "O texto mostra combinação de formas e temas; não contrapõe necessariamente pautas indígenas a questões urbanas.",
+      "O rádio foi justamente o meio pelo qual os integrantes conheceram o rap; não se afirma rejeição da indústria radiofônica.",
+      "As letras abordam a realidade social indígena, especialmente a demarcação de terras, portanto não há distanciamento.",
+      "O texto menciona a poesia como ponto de partida criativo, mas destaca o rap como manifestação artística e de defesa; não afirma que o movimento tenha como objetivo estimular o estudo da poesia indígena."
+    ]
+  },
+  {
+    "materia": "portugues",
+    "ano": "2024",
+    "assunto": "1º dia da aplicação regular (03/11/2024) · Caderno 1 – Azul",
+    "numero": "06",
+    "prova": "https://download.inep.gov.br/enem/provas_e_gabaritos/2024_PV_impresso_D1_CD1.pdf",
+    "gabarito": "https://download.inep.gov.br/enem/provas_e_gabaritos/2024_GB_impresso_D1_CD1.pdf",
+    "enunciado": "Expressões e termos utilizados no Amazonas são retratados em livro e em camisetas\n\n“Na linguagem, podemos nos ver da forma mais verdadeira: nossas crenças, nossos valores, nosso lugar no mundo”, afirmou o doutor em linguística e professor da Ufam em seu livro Amazonês: expressões e termos usados no Amazonas. Portanto, o amazonense, com todas as suas “cunhantãs” e “curumins”, acaba por encontrar um lugar no mundo e formar uma unidade linguística, informalmente denominada de português “caboco”, que muito se diferencia do português “mineiro”, “gaúcho”, “carioca” e de tantos outros espalhados pelo Brasil. O livro, que conta com cerca de 1 100 expressões e termos típicos do falar amazonense, levou dez anos para ser construído. Para o autor, o principal objetivo da obra é registrar a linguagem.\n\nUm designer amazonense também acha o amazonês “xibata”, tanto é que criou uma série de camisetas estampadas com o nome de Caboquês Ilustrado, que mistura o bom humor com as expressões típicas da região. A coleção conta com sete modelos já lançados, entre eles: Leseira Baré, Xibata no Balde e Até o Tucupi, e 43 ainda na fila de espera. Para o criador, as camisas têm como objetivo “resgatar o orgulho do povo manauara, do povo do Norte”.\n\nDisponível em: https://g1.globo.com. Acesso em: 15 jan. 2024 (adaptado).\n\nA reportagem apresenta duas iniciativas: o livro Amazonês e as camisetas do Caboquês Ilustrado. Com temática em comum, essas iniciativas",
+    "alternativas": [
+      "recomendam produtos feitos por empreendedores da região Norte.",
+      "ressaltam diferenças entre o falar manauara e outros falares.",
+      "reverenciam o trabalho feito por pesquisadores brasileiros.",
+      "destacam a descontração no jeito de ser do amazonense.",
+      "valorizam o repertório linguístico do povo do Amazonas."
+    ],
+    "correta": 4,
+    "explicacaoCerta": "As duas iniciativas registram, exibem e celebram expressões próprias do falar amazonense: o livro reúne termos e as camisetas os divulgam. O ponto comum é valorizar esse repertório linguístico e sua relação com a identidade regional.",
+    "explicacoesErradas": [
+      "A matéria relata as iniciativas, mas não recomenda a compra de produtos nem tem como eixo o empreendedorismo regional.",
+      "As diferenças entre variedades são citadas no texto, mas não resumem o propósito comum do livro e das camisetas.",
+      "O livro é de um professor pesquisador, mas as camisetas têm outro criador; a temática compartilhada não é reverenciar pesquisadores.",
+      "O humor aparece na coleção de camisetas, mas não é o denominador comum: o livro tem como objetivo registrar a linguagem.",
+      ""
+    ]
+  },
+  {
+    "materia": "portugues",
+    "ano": "2025",
+    "assunto": "1º dia da aplicação regular (09/11/2025) · Caderno 1 – Azul",
+    "numero": "12",
+    "prova": "https://download.inep.gov.br/enem/provas_e_gabaritos/2025_PV_impresso_D1_CD1.pdf",
+    "gabarito": "https://download.inep.gov.br/enem/provas_e_gabaritos/2025_GB_impresso_D1_CD1.pdf",
+    "enunciado": "O Ministério do Esporte no Brasil lançou o programa Maré Inclusiva, em 2024, ano dos Jogos Paralímpicos de Paris. Esse programa visa ampliar as oportunidades para pessoas com deficiência que desejam praticar o surf. O parasurf é a prática do surf adaptada para permitir que pessoas com deficiência pratiquem o esporte em todas as suas categorias, modalidades e manifestações. Para a Secretaria Nacional do Paradesporto, a iniciativa é mais do que um programa de esporte, é uma iniciativa que busca transformar vidas e promover a inclusão por meio do parasurf, criando um legado de igualdade e respeito.\n\nDisponível em: www.gov.br/esporte. Acesso em: 6 set. 2024 (adaptado).\n\nDe acordo com esse texto, o programa voltado ao estímulo da prática do parasurf evidencia a",
+    "alternativas": [
+      "adesão de diferentes países a programas inclusivos.",
+      "preocupação política em atender a demandas paralímpicas.",
+      "importância de uma política pública esportiva para a inclusão.",
+      "eficiência das iniciativas de inclusão em megaeventos esportivos.",
+      "escassez de investimento em práticas corporais de aventura na natureza."
+    ],
+    "correta": 2,
+    "explicacaoCerta": "O programa é uma iniciativa do Ministério do Esporte que amplia o acesso de pessoas com deficiência ao parasurf e declara buscar inclusão e igualdade. O texto, portanto, evidencia o papel de uma política pública esportiva inclusiva.",
+    "explicacoesErradas": [
+      "O programa é apresentado como iniciativa brasileira; não há informação sobre adesão de vários países.",
+      "Embora seja uma ação governamental, o foco não é simplesmente atender demandas paralímpicas em geral, mas promover inclusão por meio do esporte.",
+      "",
+      "Os Jogos de Paris contextualizam o lançamento, mas o texto não avalia a eficiência de iniciativas de inclusão em megaeventos.",
+      "Não se fala em escassez de investimento; o texto apresenta um programa criado para ampliar oportunidades."
+    ]
+  },
+  {
+    "materia": "literatura",
+    "ano": "2022",
+    "assunto": "1º dia — 13/11/2022 · Caderno 1 — Azul",
+    "numero": "29",
+    "prova": "https://download.inep.gov.br/enem/provas_e_gabaritos/2022_PV_impresso_D1_CD1.pdf",
+    "gabarito": "https://download.inep.gov.br/enem/provas_e_gabaritos/2022_GB_impresso_D1_CD1.pdf",
+    "enunciado": "Esaú e Jacó\n\nBárbara entrou, enquanto o pai pegou da viola e passou ao patamar de pedra, à porta da esquerda. Era uma criaturinha leve e breve, saia bordada, chinelinha no pé. Não se lhe podia negar um corpo airoso. Os cabelos, apanhados no alto da cabeça por um pedaço de fita enxovalhada, faziam-lhe um solidéu natural, cuja borla era suprida por um raminho de arruda. Já vai nisto um pouco de sacerdotisa. O mistério estava nos olhos. Estes eram opacos, não sempre nem tanto que não fossem também lúcidos e agudos, e neste último estado eram igualmente compridos; tão compridos e tão agudos que entravam pela gente abaixo, revolviam o coração e tornavam cá fora, prontos para nova entrada e outro revolvimento. Não te minto dizendo que as duas sentiram tal ou qual fascinação. Bárbara interrogou-as; Natividade disse ao que vinha e entregou-lhe os retratos dos filhos e os cabelos cortados, por lhe haverem dito que bastava. — Basta, confirmou Bárbara. Os meninos são seus filhos? — São.\n\nASSIS, M. Obra completa. Rio de Janeiro: Nova Aguilar, 1994.\n\nNo relato da visita de duas mulheres ricas a uma vidente no Morro do Castelo, a ironia — um dos traços mais representativos da narrativa machadiana — consiste no",
+    "alternativas": [
+      "modo de vestir dos moradores do morro carioca.",
+      "senso prático em relação às oportunidades de renda.",
+      "mistério que cerca as clientes de práticas de vidência.",
+      "misto de singeleza e astúcia dos gestos da personagem.",
+      "interesse do narrador pelas figuras femininas ambíguas."
+    ],
+    "correta": 3,
+    "explicacaoCerta": "A ironia está no contraste entre a aparência simples e a esperteza de Bárbara, que conduz a situação com gestos e falas calculados.",
+    "explicacoesErradas": [
+      "O modo de vestir é descrito, mas não é o foco da ironia apontada no relato.",
+      "O trecho não destaca uma busca por renda ou uma oportunidade econômica.",
+      "A vidência compõe a situação, mas o efeito irônico está na caracterização ambígua de Bárbara, não no mistério das clientes.",
+      "",
+      "O narrador não centra a ironia em figuras femininas ambíguas em geral; ela se constrói sobretudo nos gestos de Bárbara."
+    ]
+  },
+  {
+    "materia": "literatura",
+    "ano": "2023",
+    "assunto": "1º dia — 05/11/2023 · Caderno 1 — Azul",
+    "numero": "86",
+    "prova": "https://download.inep.gov.br/enem/provas_e_gabaritos/2023_PV_impresso_D1_CD1.pdf",
+    "gabarito": "https://download.inep.gov.br/enem/provas_e_gabaritos/2023_GB_impresso_D1_CD1.pdf",
+    "enunciado": "Durante a Revolução Francesa, um certo padre Niollant escondeu-se no pequeno castelo de L’Escarbas. Pagou amplamente a hospitalidade do velho fidalgo ocupando-se da educação de sua filha, Anaïs. A presença da mãe em nada modificou essa educação masculina dada a uma jovem criatura já muito inclinada à independência em virtude da vida no campo. O padre transmitiu à aluna sua intrepidez de opiniões e sua facilidade de julgamento, sem pensar que essas qualidades, tão necessárias num homem, se tornam defeitos numa mulher destinada aos humildes afazeres de mãe de família. Embora o padre recomendasse continuamente à aluna ser tanto mais graciosa e modesta quanto seu saber era mais extenso, a senhorita de Nègrepelisse ficou com excelente opinião de si mesma.\n\nBALZAC, H. Ilusões perdidas. São Paulo: Penguin Classics; Cia. das Letras, 2011 (adaptado).\n\nO comportamento desenvolvido pela personagem evidencia uma postura de",
+    "alternativas": [
+      "abandono de laços afetivos.",
+      "negação da ideia de subjetividade.",
+      "aceitação da hierarquia de gênero.",
+      "consolidação da estratificação social.",
+      "ruptura de valores institucionalizados."
+    ],
+    "correta": 4,
+    "explicacaoCerta": "Anaïs mantém uma opinião elevada de si e uma inclinação à independência, contrariando as expectativas de modéstia e submissão impostas às mulheres no trecho.",
+    "explicacoesErradas": [
+      "O trecho não mostra rompimento de vínculos afetivos; trata da educação e da postura da personagem.",
+      "Anaïs manifesta uma individualidade própria, não uma negação da subjetividade.",
+      "A postura dela não aceita a hierarquia de gênero: põe em questão as expectativas reservadas às mulheres.",
+      "A passagem não apresenta a personagem reforçando divisões de classe como tema central.",
+      ""
+    ]
+  },
+  {
+    "materia": "literatura",
+    "ano": "2024",
+    "assunto": "1º dia — 03/11/2024 · Caderno 1 — Azul",
+    "numero": "38",
+    "prova": "https://download.inep.gov.br/enem/provas_e_gabaritos/2024_PV_impresso_D1_CD1.pdf",
+    "gabarito": "https://download.inep.gov.br/enem/provas_e_gabaritos/2024_GB_impresso_D1_CD1.pdf",
+    "enunciado": "pessoas com suas malas mochilas e valises chegam e se vão se encontram se despedem e se despem de seus pertences como se pudessem chegar a algum lugar onde elas mesmas não estivessem\n\nRUIZ, A. In: SANT’ANNA, A. Rua Aribau: coletânea de poemas. Porto Alegre: TAG, 2018.\n\nEsse poema, por meio da ideia de deslocamento, metaforiza a tentativa de pessoas",
+    "alternativas": [
+      "buscarem novos encontros.",
+      "fugirem da própria identidade.",
+      "procurarem lugares inexplorados.",
+      "partirem em experiências inusitadas.",
+      "desaparecerem da vida em sociedade."
+    ],
+    "correta": 1,
+    "explicacaoCerta": "O verso sugere que as pessoas tentam chegar a um lugar onde elas próprias não estejam; o deslocamento figura a tentativa de escapar de si mesmas.",
+    "explicacoesErradas": [
+      "Encontros aparecem no poema, mas não explicam a imagem final de tentar chegar onde não se está.",
+      "",
+      "O texto não destaca a descoberta de lugares desconhecidos; o destino é uma metáfora.",
+      "Não há ênfase em experiências novas ou inusitadas, e sim em afastar-se de si.",
+      "A ideia não é deixar a sociedade, mas fugir da própria identidade."
+    ]
+  },
+  {
+    "materia": "literatura",
+    "ano": "2025",
+    "assunto": "1º dia — 09/11/2025 · Caderno 1 — Azul",
+    "numero": "40",
+    "prova": "https://download.inep.gov.br/enem/provas_e_gabaritos/2025_PV_impresso_D1_CD1.pdf",
+    "gabarito": "https://download.inep.gov.br/enem/provas_e_gabaritos/2025_GB_impresso_D1_CD1.pdf",
+    "enunciado": "Desenvolvendo-se nesse meio, é natural que Celina, filha mais velha de D. Adozinda, tivesse seus pequenos flirts com alguns desses rapazes, muito íntimos da casa e trazendo-lhe da cidade presentes de doces, de balas de ovo, de jornais ilustrados ou de frutas. As irmãs mais novas iam ao colégio; ela ficava, enchendo o tempo com uns crochês vagarosos, costuras leves, a leitura dos folhetins dos jornais; e o Gilberto, que raramente saía, andava sempre ao seu lado, muito caído por esse tipo um pouco mórbido de menina anêmica [...]. O Gilberto não valia nada, mas quem sabe se apareceria outro, simplório e sincero como ele? E a filha, com os seus dezessete anos, começava a embaraçá-la um pouco, nesse difícil papel de virgem numa casa de pensão, cheia de rapazes. Ora, o melhor era esperar, dar tempo ao tempo... E o Gilberto e a Celina continuaram a namorar-se, ele cândido, ela dúbia; enquanto o Coronel Juvenato, que deixara a mulher em Sobral para tratar de uma concessão rendosa com os políticos do Rio, ia agora monopolizando, como protetor mais importante, as alegres visitas matinais da viúva, que já lhe levava sempre o café — mas sem flores colhidas no jardim, ainda rociadas de orvalho, porque o cearense não dava para essas coisas de poesia. Era rápido, prático, e não admitia bobagens. Por isso, todos os sábados à noite, ele dizia a D. Adozinda com um tremor lúbrico nas banhas moles da face, os olhinhos vivos pestanejando: — A senhora não se esqueça que amanhã é domingo... Leve-me cedo o café, hein?... que eu tenho de ir à missa... — Pois não, pois não, Coronel! fique descansado — respondia a viúva do Ferreira, muito atenciosamente, tirando-lhe umas caspas da gola do paletó, com a mão repolhuda. Os outros hóspedes riam-se à socapa; e no domingo o café não faltava, bem cedinho...\n\nDOLORES, C. A luta. Rio de Janeiro: Ímã, s.d.\n\nNesse trecho, ao explorar a descrição como recurso que demarca impressões e pontos de vista, o narrador cria uma ambiência sugestiva do(a)",
+    "alternativas": [
+      "escárnio relacionado à degradação moral dos indivíduos.",
+      "cenário urbano marcado por condições de insalubridade.",
+      "persistência do sentimentalismo explorado pelos folhetins.",
+      "prática do enriquecimento ilícito visto nas grandes cidades.",
+      "desigualdade de gênero acentuada pela baixa escolarização."
+    ],
+    "correta": 0,
+    "explicacaoCerta": "As descrições caricaturais e o contraste entre a aparência respeitável e as intenções das personagens dão ao trecho um tom de escárnio da degradação moral.",
+    "explicacoesErradas": [
+      "",
+      "Embora a cena ocorra numa casa de pensão, o trecho não constrói principalmente um quadro de insalubridade.",
+      "Os folhetins são mencionados, mas o narrador não celebra o sentimentalismo: a ambiência é satírica.",
+      "A concessão e os políticos são citados, mas o foco da descrição não é explicar enriquecimento ilícito.",
+      "Há expectativas de gênero na passagem, porém a pergunta trata da ambiência criada pelas descrições, cujo tom dominante é de escárnio."
+    ]
+  },
+  {
+    "materia": "artes",
+    "ano": "2022",
+    "assunto": "1º dia (13/11/2022) · Caderno 1 — Azul",
+    "numero": "45",
+    "prova": "https://download.inep.gov.br/enem/provas_e_gabaritos/2022_PV_impresso_D1_CD1.pdf",
+    "gabarito": "https://download.inep.gov.br/enem/provas_e_gabaritos/2022_GB_impresso_D1_CD1.pdf",
+    "enunciado": "O Recife fervilhava no começo da década de 1990, e os artistas trabalhavam para resgatar o prestígio da cultura pernambucana. Era preciso se inspirar, literalmente, nas raízes sobre as quais a cidade se construiu. Foi aí que, em 1992, com a publicação de um manifesto escrito pelo músico e jornalista Fred Zero Quatro, da banda Mundo Livre S/A, nasceu o manguebeat. O nome vem de “mangue”, vegetação típica da região, e “beat”, para representar as batidas e as influências musicais que o movimento abraçaria a partir dali. Era a hora e a vez de os caranguejos — aos quais os músicos recifenses gostavam de se comparar — mostrarem as caras: o maracatu e suas alfaias se misturaram com as batidas do hip-hop, as guitarras do rock, elementos eletrônicos e o sotaque recifense de Chico Science. A busca pelo novo rendeu uma perspectiva diferente do Brasil ao olhar para o Recife. A cidade deixou de ser o lugar apenas do frevo e do carnaval, transformando-se na ebulição musical que continua a acontecer mesmo após os 25 anos do lançamento do primeiro disco da Nação Zumbi, Da lama ao caos.\n\nFORCIONI, G. et al. O mangue está de volta. Revista Esquinas, n. 87, set. 2019 (adaptado).\n\nChico Science foi fundamental para a renovação da música pernambucana, fato que se deu pela",
+    "alternativas": [
+      "utilização de aparelhos musicais eletrônicos em lugar dos instrumentos tradicionais.",
+      "ocupação de espaços da natureza local para a produção de eventos musicais memoráveis.",
+      "substituição de antigas práticas musicais, como o frevo, por melodias e harmonias inovadoras.",
+      "recuperação de composições tradicionais folclóricas e sua apresentação em grandes festivais.",
+      "integração de referenciais culturais de diferentes origens, criando uma nova combinação estética."
+    ],
+    "correta": 4,
+    "explicacaoCerta": "O texto descreve a mistura de maracatu com hip-hop, rock, elementos eletrônicos e sotaques locais. A renovação veio da integração de referências diversas numa combinação estética nova.",
+    "explicacoesErradas": [
+      "O texto diz que elementos eletrônicos foram incorporados, não que substituíram os instrumentos tradicionais.",
+      "A passagem trata da mistura musical, não da ocupação de espaços naturais para eventos.",
+      "O manguebeat não substituiu o frevo: o texto relata a ampliação da paisagem musical do Recife, não a eliminação de práticas antigas.",
+      "A descrição não se limita a recuperar folclore nem menciona apresentações em grandes festivais; destaca a combinação de tradições e gêneros diferentes.",
+      ""
+    ]
+  },
+  {
+    "materia": "artes",
+    "ano": "2023",
+    "assunto": "1º dia (05/11/2023) · Caderno 1 — Azul",
+    "numero": "32",
+    "prova": "https://download.inep.gov.br/enem/provas_e_gabaritos/2023_PV_impresso_D1_CD1.pdf",
+    "gabarito": "https://download.inep.gov.br/enem/provas_e_gabaritos/2023_GB_impresso_D1_CD1.pdf",
+    "enunciado": "O sol começa a descer por trás da vegetação da Ilha da Restinga, na outra margem do rio Paraíba, colorindo o céu de amarelo, laranja e lilás. Então se ouvem as primeiras notas do Bolero, do compositor francês Maurice Ravel, executadas pelo saxofonista Jurandy. É assim o pôr do sol da praia do Jacaré, em Cabedelo (Grande João Pessoa). Depois do Bolero, Jurandy toca Asa branca, de Luiz Gonzaga, e Meu sublime torrão, de Genival Macedo, espécie de hino não oficial da Paraíba.\n\nPINHEIRO, A. Sol se põe embalado pelo Bolero de Ravel. Disponível em: http://tools.folha.com.br. Acesso em: 16 set. 2012 (adaptado).\n\nA interpretação musical de Jurandy do Sax, codinome de José Jurandy Félix, apresenta um repertório caracterizado pela",
+    "alternativas": [
+      "inter-relação de referenciais estéticos aparentemente distanciados.",
+      "valorização de músicas que revelam mensagens de serenidade.",
+      "consagração do repertório erudito como cultura dominante.",
+      "iniciativa de estímulo à vocação turística da cidade.",
+      "divisão hierárquica entre gêneros e estilos musicais."
+    ],
+    "correta": 0,
+    "explicacaoCerta": "O repertório combina o Bolero, de Ravel, com canções brasileiras ligadas à cultura popular e regional. A característica central é aproximar referenciais musicais que parecem distantes.",
+    "explicacoesErradas": [
+      "",
+      "O texto não caracteriza as peças por mensagens de serenidade; descreve a origem e a combinação de gêneros e referências.",
+      "A presença de Ravel não consagra a música erudita como dominante: ela aparece junto a repertório brasileiro popular.",
+      "O cenário turístico é mencionado, mas o enunciado pergunta pela característica do repertório, não pelo propósito da apresentação.",
+      "O texto mostra justaposição entre estilos, não uma divisão hierárquica entre eles."
+    ]
+  },
+  {
+    "materia": "artes",
+    "ano": "2024",
+    "assunto": "1º dia (03/11/2024) · Caderno 1 — Azul",
+    "numero": "16",
+    "prova": "https://download.inep.gov.br/enem/provas_e_gabaritos/2024_PV_impresso_D1_CD1.pdf",
+    "gabarito": "https://download.inep.gov.br/enem/provas_e_gabaritos/2024_GB_impresso_D1_CD1.pdf",
+    "enunciado": "Uma definição possível para o conceito de arte afro-brasileira pode ser: produção plástica que é feita por negros, mestiços ou brancos a partir de suas experiências sociais com a cultura negra nacional. Exemplos clássicos dessa abordagem são Carybé (1911-1997), Mestre Didi (1917-2013) e Djanira da Motta e Silva (1914-1979), cujas obras emergem e ganham forma em razão do ambiente social no qual habitaram e viveram. Se Didi era um célebre representante da cultura religiosa nagô baiana e brasileira, iniciado desde o ventre no candomblé, Carybé era argentino e, naturalizado brasileiro, envolveu-se de tal modo com essa religião que alguns dos orixás dos quais conhecemos a imagem visual são produções suas.\n\nDisponível em: www.premiopipa.com. Acesso em: 13 nov. 2021 (adaptado).\n\nSob a perspectiva da multiculturalidade e de acordo com o texto, a produção artística afro-brasileira caracteriza-se pelo(a)",
+    "alternativas": [
+      "estranhamento no modo de apropriação da cultura religiosa de matriz africana.",
+      "distanciamento entre as raízes de matriz africana e a estética de outras culturas.",
+      "visão uniformizadora das religiões de matriz africana expressada nas diferentes produções.",
+      "relação complexa entre as vivências pessoais dos artistas e os referenciais estéticos de matriz africana.",
+      "padronização da forma de produção e da temática da matriz africana presente nas obras dos artistas citados."
+    ],
+    "correta": 3,
+    "explicacaoCerta": "O texto relaciona a formação e as experiências particulares dos artistas com suas referências culturais afro-brasileiras. A produção resulta dessa relação complexa, não de um padrão único.",
+    "explicacoesErradas": [
+      "O texto enfatiza envolvimento e vivência com a cultura de matriz africana, e não estranhamento em sua apropriação.",
+      "A definição aproxima as experiências sociais dos artistas da cultura negra nacional, em vez de separar essas raízes de outras estéticas.",
+      "Os exemplos distintos não apresentam uma visão uniforme das religiões; mostram experiências e trajetórias próprias.",
+      "",
+      "O texto não propõe padronização: destaca artistas diferentes e a relação de suas vivências com os referenciais afro-brasileiros."
+    ]
+  },
+  {
+    "materia": "artes",
+    "ano": "2025",
+    "assunto": "1º dia (09/11/2025) · Caderno 1 — Azul",
+    "numero": "53",
+    "prova": "https://download.inep.gov.br/enem/provas_e_gabaritos/2025_PV_impresso_D1_CD1.pdf",
+    "gabarito": "https://download.inep.gov.br/enem/provas_e_gabaritos/2025_GB_impresso_D1_CD1.pdf",
+    "enunciado": "QUESTÃO 53 — TEXTO I\n\nA partir do século IV, com os imperadores ditos cristãos, o teatro e a dança foram condenados. O batismo era recusado aos que atuavam no circo ou na pantomima. E em 398, no Concílio de Cartago, os que iam ao teatro nos dias santos foram excomungados.\n\nDINIZ, T.; SANTOS, G. História da dança. Disponível em: www.uel.br. Acesso em: 18 out. 2023.\n\nTEXTO II\n\nA dança no ato litúrgico cumpre tanto um papel de adoração quanto mercadológico. Não à toa há aceitação, expansão e investimento nessa prática percebida massivamente pela ampla divulgação principalmente nas redes sociais. A expansão e ampliação por via de festivais, aulas, cursos, palestras etc. consolida a criação de um mercado específico para esse público.\n\nSANTOS, Z. Dança gospel. Salvador: UFBA, 2021.\n\nA percepção sobre a dança e a cultura corporal apresenta aspectos relacionados, respectivamente, a",
+    "alternativas": [
+      "segregação social e intolerância eclesiástica.",
+      "rituais eucarísticos e sacramentos da Igreja.",
+      "transe individual e progresso intelectual.",
+      "penitência pessoal e juramento coletivo.",
+      "dogmatismo religioso e adesão de fiéis."
+    ],
+    "correta": 4,
+    "explicacaoCerta": "O texto I relata a condenação e punição religiosa de quem participava de práticas de dança e teatro, revelando dogmatismo religioso. O texto II descreve a aceitação e a expansão da dança gospel em atividades religiosas, associadas à adesão de fiéis.",
+    "explicacoesErradas": [
+      "Embora o texto I relate intolerância eclesiástica, o par não descreve segregação social no primeiro aspecto nem intolerância no segundo; o texto II trata de aceitação e expansão.",
+      "Não há menção a rituais eucarísticos nem a sacramentos da Igreja nos textos.",
+      "Os textos não tratam de transe individual nem relacionam a dança a progresso intelectual.",
+      "Não são descritas penitência pessoal ou prestação de juramento coletivo; o foco está na repressão religiosa histórica e na difusão contemporânea da dança gospel.",
+      ""
+    ]
+  },
+  {
+    "materia": "educacao-fisica",
+    "ano": "2022",
+    "assunto": "13 de novembro de 2022 (1º dia) · Caderno 1 – Azul – Aplicação regular",
+    "numero": "20",
+    "prova": "https://download.inep.gov.br/enem/provas_e_gabaritos/2022_PV_impresso_D1_CD1.pdf",
+    "gabarito": "https://download.inep.gov.br/enem/provas_e_gabaritos/2022_GB_impresso_D1_CD1.pdf",
+    "enunciado": "Seis em cada dez pessoas com 15 anos ou mais não praticam esporte ou atividade física. São mais de 100 milhões de sedentários. Esses são dados do estudo Práticas de esporte e atividade física, da Pnad 2015, realizado pelo IBGE. A falta de tempo e de interesse são os principais motivos apontados para o sedentarismo. Paralelamente, 73,3% das pessoas de 15 anos ou mais afirmaram que o poder público deveria investir em esporte ou atividades físicas. Observou-se uma relação direta entre escolaridade e renda na realização de esportes ou atividades físicas. Enquanto 17,3% das pessoas que não tinham instrução realizavam diversas práticas corporais, esse percentual chegava a 56,7% das pessoas com superior completo. Entre as pessoas que têm práticas de esporte e atividade física regulares, o percentual de praticantes ia de 31,1%, na classe sem rendimento, a 65,2%, na classe de cinco salários mínimos ou mais. A falta de tempo foi mais declarada pela população adulta, com destaque entre as pessoas de 25 a 39 anos. Entre os adolescentes de 15 a 17 anos, o principal motivo foi não gostarem ou não quererem. Já o principal motivo para praticar esporte, declarado por 11,2 milhões de pessoas, foi relaxar ou se divertir, seguido de melhorar a qualidade de vida ou o bem-estar. A falta de instalação esportiva acessível ou nas proximidades foi um motivo pouco citado, demonstrando que a não prática estaria menos associada à infraestrutura disponível. Disponível em: www.esporte.gov.br. Acesso em: 9 ago. 2017 (adaptado).\n\nCom base na pesquisa e em uma visão ampliada de saúde, para a prática regular de exercícios ter influência significativa na saúde dos brasileiros, é necessário o desenvolvimento de estratégias que",
+    "alternativas": [
+      "promovam a melhoria da aptidão física da população, dedicando-se mais tempo aos esportes.",
+      "combatam o sedentarismo presente em parcela significativa da população no território nacional.",
+      "facilitem a adoção da prática de exercícios, com ações relacionadas à educação e à distribuição de renda.",
+      "auxiliem na construção de mais instalações esportivas e espaços adequados para a prática de atividades físicas e esportes.",
+      "estimulem o incentivo fiscal para a iniciativa privada destinar verbas aos programas nacionais de promoção da saúde pelo esporte."
+    ],
+    "correta": 2,
+    "explicacaoCerta": "A pesquisa associa diretamente a prática de atividades físicas à escolaridade e à renda, enquanto aponta falta de tempo e interesse como obstáculos. Estratégias que ampliem educação e condições de acesso enfrentam as desigualdades indicadas e facilitam a adoção da prática.",
+    "explicacoesErradas": [
+      "Aumentar o tempo dedicado ao esporte não aborda os obstáculos sociais destacados na pesquisa e restringe a atividade física ao esporte.",
+      "Nomeia o problema do sedentarismo, mas não indica uma estratégia que enfrente os fatores associados à desigualdade na prática.",
+      "",
+      "A infraestrutura foi pouco citada como motivo para a não prática, então ampliar instalações não responde ao fator central apontado.",
+      "A pesquisa não indica que incentivos fiscais a empresas sejam a solução; a alternativa não enfrenta a relação observada entre prática, educação e renda."
+    ]
+  },
+  {
+    "materia": "educacao-fisica",
+    "ano": "2023",
+    "assunto": "5 de novembro de 2023 (1º dia) · Caderno 1 – Azul – Aplicação regular",
+    "numero": "42",
+    "prova": "https://download.inep.gov.br/enem/provas_e_gabaritos/2023_PV_impresso_D1_CD1.pdf",
+    "gabarito": "https://download.inep.gov.br/enem/provas_e_gabaritos/2023_GB_impresso_D1_CD1.pdf",
+    "enunciado": "O acesso às Práticas Corporais/Atividades Físicas (PC/AF) é desigual no Brasil, à semelhança de outros indicadores sociais e de saúde. Em geral, PC/AF prazerosas, diversificadas, mais afeitas ao período de lazer estão concentradas nas populações mais abastadas. As atividades físicas de deslocamento, trajetos a pé ou de bicicleta para estudar ou trabalhar, por exemplo, são mais frequentes na classe social menos favorecida. Aqui, há uma relação inversa e perversa entre variáveis socioeconômicas de acesso às PC/AF. As maiores prevalências de inatividade física foram em mulheres, pessoas com 60 anos ou mais, negros, pessoas com autoavaliação de saúde ruim ou muito ruim, com renda familiar de até quatro salários mínimos por pessoa, pessoas que desconhecem programas públicos de PC/AF e residentes em áreas sem locais públicos para a prática. KNUTH, A. G.; ANTUNES, P. C. Saúde e Sociedade, n. 2, 2021 (adaptado).\n\nO fator central que impacta a realização de práticas corporais/atividades físicas no tempo de lazer no Brasil é a",
+    "alternativas": [
+      "diferença entre homens e mulheres.",
+      "inexistência de políticas públicas.",
+      "diversidade de faixa etária.",
+      "variação de condição étnica.",
+      "desigualdade entre classes sociais."
+    ],
+    "correta": 4,
+    "explicacaoCerta": "O texto destaca que atividades de lazer prazerosas e diversificadas se concentram entre os mais abastados e explicita uma relação entre condições socioeconômicas e acesso. Portanto, o fator central é a desigualdade entre classes sociais.",
+    "explicacoesErradas": [
+      "Diferenças entre mulheres e homens não são apontadas como fator central; o texto menciona mulheres entre grupos com maior inatividade.",
+      "O texto cita desconhecimento de programas públicos, mas não afirma que políticas públicas inexistem.",
+      "A idade aparece como um dos indicadores associados à inatividade, mas não é o fator central do acesso desigual no lazer.",
+      "A condição étnica é mencionada entre os indicadores, mas não explica centralmente a concentração socioeconômica das práticas de lazer.",
+      ""
+    ]
+  },
+  {
+    "materia": "educacao-fisica",
+    "ano": "2024",
+    "assunto": "3 de novembro de 2024 (1º dia) · Caderno 1 – Azul – Aplicação regular",
+    "numero": "26",
+    "prova": "https://download.inep.gov.br/enem/provas_e_gabaritos/2024_PV_impresso_D1_CD1.pdf",
+    "gabarito": "https://download.inep.gov.br/enem/provas_e_gabaritos/2024_GB_impresso_D1_CD1.pdf",
+    "enunciado": "Por trás do universo “masculino” das lutas, é cada vez mais notório o aumento da participação de mulheres nessa prática corporal. Algumas situações reforçam esse fenômeno de ocupação em ambientes de lutas: a inclusão de mulheres em combates de artes marciais mistas, ou MMA, a transmissão televisiva de lutas de mulheres e a criação de horários específicos para elas em academias que ensinam lutas. Uma pesquisa científica mostrou menor participação e mobilização das meninas em comparação com os meninos nas aulas de Educação Física. Entre as justificativas discentes para essa situação está o fato de que eles relacionam a luta como uma expressão corporal masculina e, por consequência, não adequada aos interesses femininos. Dessa forma, o ensino de lutas nas aulas de Educação Física é atravessado por tensões relacionadas às questões de gênero e sexualidade, o que, por sua vez, pode favorecer a sua exclusão do conteúdo próprio da disciplina. SO, M. R.; MARTINS, M. Z.; BETTI, M. As relações das meninas com os saberes das lutas nas aulas de Educação Física. Motrivivência, n. 56, dez. 2018 (adaptado).\n\nSegundo o texto, apesar do aumento da participação de mulheres em lutas, a realidade na escola ainda é diferente em razão do(a)",
+    "alternativas": [
+      "esportivização desse conteúdo.",
+      "masculinização dessa modalidade.",
+      "enfoque desses eventos pela mídia.",
+      "trato pedagógico dessa manifestação.",
+      "marginalização desse tema pela Educação Física."
+    ],
+    "correta": 1,
+    "explicacaoCerta": "O texto diz que estudantes associam a luta a uma expressão corporal masculina e, por isso, a consideram inadequada aos interesses femininos. Essa masculinização atribuída à modalidade explica a diferença de participação na escola.",
+    "explicacoesErradas": [
+      "O trecho não atribui a diferença à transformação das lutas em esporte; a justificativa apresentada é a associação com o masculino.",
+      "",
+      "A mídia é citada como exemplo do aumento da participação feminina, não como causa da menor participação das meninas na escola.",
+      "Embora o ensino seja atravessado por tensões de gênero, o texto aponta como razão a percepção de que a luta seria masculina, não uma forma específica de abordagem pedagógica.",
+      "A possível exclusão do conteúdo é apresentada como consequência das tensões de gênero, não como a justificativa discente que explica a realidade descrita."
+    ]
+  },
+  {
+    "materia": "educacao-fisica",
+    "ano": "2025",
+    "assunto": "9 de novembro de 2025 (1º dia) · Caderno 1 – Azul – Aplicação regular",
+    "numero": "27",
+    "prova": "https://download.inep.gov.br/enem/provas_e_gabaritos/2025_PV_impresso_D1_CD1.pdf",
+    "gabarito": "https://download.inep.gov.br/enem/provas_e_gabaritos/2025_GB_impresso_D1_CD1.pdf",
+    "enunciado": "A diferença entre briga e luta é a existência de juízes e medalhas? A briga desumaniza o outro e pode até matá-lo. Já na luta, as intenções do outro são consideradas sua proposta combativa e suas habilidades, enfim, sua meta de vencer. Na luta, o desenvolvimento passa pelo contato com a agressividade, a raiva, a frustração, o orgulho, a determinação e a fraqueza. Daí também a luta não ser apenas com o outro, mas consigo mesmo, num combate contra as próprias limitações, sobretudo, contra o próprio orgulho. BARREIRA, C. A briga desumaniza. A luta, não. O Estado de S. Paulo, 22 ago. 2010 (adaptado).\n\nEsse texto apresenta as diferenças entre briga e luta, na medida em que aponta o(a)",
+    "alternativas": [
+      "superação pessoal na luta.",
+      "violência evidenciada na luta.",
+      "predomínio de regras na briga.",
+      "desafio externo presente na luta.",
+      "habilidade desenvolvida na briga."
+    ],
+    "correta": 0,
+    "explicacaoCerta": "A luta é descrita como um combate também consigo mesmo e contra as próprias limitações, especialmente o orgulho. Isso corresponde à superação pessoal.",
+    "explicacoesErradas": [
+      "",
+      "O texto associa a desumanização e a possibilidade de matar à briga; a luta é descrita de outro modo.",
+      "A existência de juízes e medalhas é levantada na pergunta inicial, mas o trecho não caracteriza a briga pelo predomínio de regras.",
+      "A luta envolve o outro, mas o ponto destacado é também o enfrentamento interno, não um desafio apenas externo.",
+      "As habilidades são mencionadas como parte da proposta combativa na luta, não como algo desenvolvido na briga."
+    ]
+  },
+  {
+    "materia": "ingles",
+    "ano": "2022",
+    "assunto": "1º dia — 13/11/2022 · Caderno 1 — Azul — Aplicação regular",
+    "numero": "04",
+    "prova": "https://download.inep.gov.br/enem/provas_e_gabaritos/2022_PV_impresso_D1_CD1.pdf",
+    "gabarito": "https://download.inep.gov.br/enem/provas_e_gabaritos/2022_GB_impresso_D1_CD1.pdf",
+    "enunciado": "A Teen’s View of Social Media\n\nInstagram is made up of all photos and videos. There is the home page that showcases the posts from people you follow, an explore tab which offers posts from accounts all over the world, and your own page, with a notification tab to show who likes and comments on your posts.\n\nIt has some downsides though. It is known to make many people feel insecure or down about themselves because the platform showcases the highlights of everyone’s lives, while rarely showing the negatives. This can make one feel like their life is not going as well as others, contributing to the growing rates of anxiety or depression in many teens today. There is an underlying desire for acceptance through the number of likes or followers one has.\n\nDisponível em: https://cyberbullying.org. Acesso em: 29 out. 2021.\n\nO termo “downsides” introduz a ideia de que o Instagram é responsável por",
+    "alternativas": [
+      "oferecer recursos de fotografia.",
+      "divulgar problemas dos usuários.",
+      "estimular aceitação dos seguidores.",
+      "provocar ansiedade nos adolescentes.",
+      "aproximar pessoas ao redor do mundo."
+    ],
+    "correta": 3,
+    "explicacaoCerta": "“Downsides” anuncia consequências negativas; o texto diz que a comparação com vidas idealizadas pode contribuir para ansiedade ou depressão entre adolescentes.",
+    "explicacoesErradas": [
+      "A questão não pergunta pelos recursos de fotografia; eles são apenas apresentados como parte do funcionamento da plataforma.",
+      "O texto não diz que o Instagram divulga problemas dos usuários; diz que exibe sobretudo os momentos positivos das vidas.",
+      "A busca por aceitação por meio de curtidas é mencionada como contexto, mas a consequência negativa destacada é o sofrimento emocional.",
+      "",
+      "A possibilidade de ver publicações de pessoas do mundo todo é uma característica da plataforma, não a desvantagem descrita no trecho."
+    ]
+  },
+  {
+    "materia": "ingles",
+    "ano": "2023",
+    "assunto": "1º dia — 05/11/2023 · Caderno 1 — Azul — Aplicação regular",
+    "numero": "02",
+    "prova": "https://download.inep.gov.br/enem/provas_e_gabaritos/2023_PV_impresso_D1_CD1.pdf",
+    "gabarito": "https://download.inep.gov.br/enem/provas_e_gabaritos/2023_GB_impresso_D1_CD1.pdf",
+    "enunciado": "No man is an island,\nEntire of itself;\nEvery man is a piece of the continent,\nA part of the main.\n[...]\nAny man’s death diminishes me,\nBecause I am involved in mankind.\n\nDONNE, J. The Works of John Donne. Londres: John W. Parker, 1839 (fragmento).\n\nNesse poema, a expressão “No man is an island” ressalta o(a)",
+    "alternativas": [
+      "medo da morte.",
+      "ideia de conexão.",
+      "conceito de solidão.",
+      "risco de devastação.",
+      "necessidade de empatia."
+    ],
+    "correta": 1,
+    "explicacaoCerta": "A metáfora afirma que ninguém existe isoladamente: cada pessoa é parte da humanidade, enfatizando a conexão entre as pessoas.",
+    "explicacoesErradas": [
+      "A morte aparece em um verso, mas o sentido da expressão destacada não é o medo de morrer.",
+      "",
+      "A expressão rejeita a ideia de isolamento; não apresenta a solidão como valor ou condição desejada.",
+      "O trecho não trata de destruição ambiental ou de devastação.",
+      "Empatia pode ser associada ao tema, mas a metáfora destacada afirma diretamente a interdependência e a conexão humanas."
+    ]
+  },
+  {
+    "materia": "ingles",
+    "ano": "2024",
+    "assunto": "1º dia — 03/11/2024 · Caderno 1 — Azul — Aplicação regular",
+    "numero": "02",
+    "prova": "https://download.inep.gov.br/enem/provas_e_gabaritos/2024_PV_impresso_D1_CD1.pdf",
+    "gabarito": "https://download.inep.gov.br/enem/provas_e_gabaritos/2024_GB_impresso_D1_CD1.pdf",
+    "enunciado": "Holy War\n\nOh, so we can hate each other and fear each other\nWe can build these walls between each other\nBaby, blow by blow and brick by brick\nKeep yourself locked in, yourself locked in\n[…]\nOh, maybe we should love somebody\nOh, maybe we could care a little more\nSo maybe we should love somebody\nInstead of polishing the bombs of holy war\n\nKEYS, A. Here. Estados Unidos: RCA Records, 2016.\n\nNessa letra de canção, que aborda um contexto de ódio e intolerância, o marcador “instead of” introduz a ideia de",
+    "alternativas": [
+      "mudança de comportamento.",
+      "panorama de conflitos.",
+      "rotina de isolamento.",
+      "perspectiva bélica.",
+      "cenário religioso."
+    ],
+    "correta": 0,
+    "explicacaoCerta": "“Instead of” introduz uma substituição: em vez de alimentar a guerra, a letra propõe amar e demonstrar mais cuidado. Isso expressa mudança de comportamento.",
+    "explicacoesErradas": [
+      "",
+      "A letra menciona conflito, mas o marcador não apresenta um panorama dele; contrapõe duas condutas.",
+      "O isolamento aparece nos versos anteriores, mas não é a ideia introduzida por “instead of”.",
+      "As bombas são citadas como aquilo que deve ser substituído por amor e cuidado, não como perspectiva defendida.",
+      "A expressão “holy war” integra o contexto da letra, mas não é o sentido do marcador “instead of”."
+    ]
+  },
+  {
+    "materia": "ingles",
+    "ano": "2025",
+    "assunto": "1º dia — 09/11/2025 · Caderno 1 — Azul — Aplicação regular",
+    "numero": "02",
+    "prova": "https://download.inep.gov.br/enem/provas_e_gabaritos/2025_PV_impresso_D1_CD1.pdf",
+    "gabarito": "https://download.inep.gov.br/enem/provas_e_gabaritos/2025_GB_impresso_D1_CD1.pdf",
+    "enunciado": "My idea of philosophy is that if it is not relevant to human problems, if it does not tell us how we can go about eradicating some of the misery in this world, then it is not worth the name of philosophy. I think Socrates made a very profound statement when he asserted that philosophy is to teach us proper living. In this day and age “proper living” means liberation from the urgent problems of poverty, economic necessity and indoctrination, mental oppression.\n\nDAVIS, A. Lectures on Liberation. Washington: Smithsonian Libraries, 1971 (adaptado).\n\nNesse texto, ao discorrer sobre a relevância da filosofia, a escritora Angela Davis tem por objetivo",
+    "alternativas": [
+      "criticá-la pela restrição temática.",
+      "vinculá-la ao universo acadêmico.",
+      "afastá-la da abordagem socrática.",
+      "aproximá-la dos problemas sociais.",
+      "responsabilizá-la pela pobreza humana."
+    ],
+    "correta": 3,
+    "explicacaoCerta": "Angela Davis define a filosofia por sua relevância para problemas humanos urgentes — pobreza, necessidade econômica e opressão —, aproximando-a das questões sociais.",
+    "explicacoesErradas": [
+      "O texto não critica a filosofia por tratar de poucos temas; defende que ela enfrente problemas concretos.",
+      "A discussão não restringe a filosofia ao meio acadêmico: destaca sua aplicação à vida e à sociedade.",
+      "A autora cita Sócrates favoravelmente, como apoio à ideia de que a filosofia ensina a viver.",
+      "",
+      "A pobreza é apresentada como um problema que a filosofia deve ajudar a superar, não como algo causado por ela."
+    ]
+  },
+  {
+    "materia": "espanhol",
+    "ano": "2022",
+    "assunto": "13 de novembro de 2022 (1º dia) · Caderno 1 – Azul – aplicação regular",
+    "numero": "02",
+    "prova": "https://download.inep.gov.br/enem/provas_e_gabaritos/2022_PV_impresso_D1_CD1.pdf",
+    "gabarito": "https://download.inep.gov.br/enem/provas_e_gabaritos/2022_GB_impresso_D1_CD1.pdf",
+    "enunciado": "Pequeño hermano\n\nEs, no cabe duda, el instrumento más presente y más poderoso de todos los que entraron en nuestras vidas. Ni la televisión ni el ordenador, no hablemos ya del obsoleto fax o de las agendas o los libros electrónicos, ha tenido tal influencia, tal predicamento sobre nosotros. El móvil somos nosotros mismos. Todo desactivado e inerte, inocuo, ya les digo. Y de repente, tras un viaje y tres o cuatro imprudentes fotos, salta un aviso en la pantalla. Con sonido, además, pese a que tengo también todas las alertas desactivadas. Y mi monstruo doméstico me dice: tienes un recuerdo nuevo. Lo repetiré: tienes un recuerdo nuevo. ¿Y tú qué sabes? ¿Y a ti, máquina demoníaca, qué te importa? ¿Cómo te atreves a decirme qué son o no son mis recuerdos? ¿Qué es esta intromisión, este descaro? El pequeño hermano lo sabe casi todo. Sólo hay una esperanza: que la obsolescencia programada mate antes al pequeño hermano y que nosotros sigamos vivos, con los recuerdos que nos dé la gana.\n\nFERNÁNDEZ, D. Disponível em: www.lavanguardia.com. Acesso em: 5 dez. 2018 (adaptado).\n\nNo texto, o autor faz uma crítica ao(à)",
+    "alternativas": [
+      "conhecimento das pessoas sobre as tecnologias.",
+      "uso do celular alheio por pessoas desautorizadas.",
+      "funcionamento de recursos tecnológicos obsoletos.",
+      "ingerência do celular sobre as escolhas dos usuários.",
+      "falta de informação sobre a configuração de alertas no celular."
+    ],
+    "correta": 3,
+    "explicacaoCerta": "O autor retrata o celular como um dispositivo que invade a esfera pessoal e reivindica saber quais são as lembranças do usuário. A crítica, portanto, é à ingerência do aparelho na vida e nas escolhas de quem o usa.",
+    "explicacoesErradas": [
+      "O texto não critica o nível de conhecimento tecnológico das pessoas; centra-se na intrusão do aparelho.",
+      "Não trata do uso de celulares de terceiros sem autorização, mas da relação do autor com o próprio celular.",
+      "O fax obsoleto é apenas citado de passagem; o alvo não é o funcionamento de tecnologias antigas.",
+      "",
+      "Embora mencione alertas desativados, a crítica não é falta de informação sobre configurações, mas a intromissão do celular apesar dessas configurações."
+    ]
+  },
+  {
+    "materia": "espanhol",
+    "ano": "2023",
+    "assunto": "5 de novembro de 2023 (1º dia) · Caderno 1 – Azul – aplicação regular",
+    "numero": "02",
+    "prova": "https://download.inep.gov.br/enem/provas_e_gabaritos/2023_PV_impresso_D1_CD1.pdf",
+    "gabarito": "https://download.inep.gov.br/enem/provas_e_gabaritos/2023_GB_impresso_D1_CD1.pdf",
+    "enunciado": "Me niego rotundamente\nA negar mi voz,\nMi sangre y mi piel.\n\nY me niego rotundamente\nA dejar de ser yo,\nA dejar de sentirme bien\nCuando miro mi rostro en el espejo\nCon mi boca\nRotundamente grande,\nY mi nariz\nRotundamente hermosa,\nY mis dientes\nRotundamente blancos,\nY mi piel valientemente negra.\n\nY me niego categóricamente\nA dejar de hablar\nMi lengua, mi acento y mi historia.\n\nY me niego absolutamente\nA ser parte de los que callan,\nDe los que temen,\nDe los que lloran.\n\nPorque me acepto\nRotundamente libre,\nRotundamente negra,\nRotundamente hermosa.\n\nCAMPBELL BARR, S. Disponível em: https://negracubanateniaqueser.com. Acesso em: 25 out. 2021.\n\nPara enfatizar características e atitudes que reforçam a identidade da mulher negra, o poema da escritora costarriquenha apresenta",
+    "alternativas": [
+      "advérbios como “rotundamente” e “categóricamente”.",
+      "verbos reflexivos como “me niego” e “me acepto”.",
+      "adjetivos como “grande” e “hermosa”.",
+      "substantivos como “sangre” e “piel”.",
+      "adjetivos possessivos como “mi” e “mis”."
+    ],
+    "correta": 0,
+    "explicacaoCerta": "Os advérbios “rotundamente”, “categóricamente” e “absolutamente” intensificam as recusas e afirmações do eu lírico, sublinhando de forma enfática sua identidade e autoestima.",
+    "explicacoesErradas": [
+      "",
+      "Os verbos expressam recusa e autoaceitação, mas a questão pede o recurso que enfatiza essas atitudes; a intensificação é feita pelos advérbios.",
+      "Os adjetivos nomeiam características, mas não são o recurso de ênfase destacado na construção do poema.",
+      "Os substantivos identificam aspectos da voz e da identidade, sem exercer a intensificação apontada no enunciado.",
+      "Os possessivos indicam pertencimento (voz, língua, pele), mas não são o mecanismo enfático central do poema."
+    ]
+  },
+  {
+    "materia": "espanhol",
+    "ano": "2024",
+    "assunto": "3 de novembro de 2024 (1º dia) · Caderno 1 – Azul – aplicação regular",
+    "numero": "01",
+    "prova": "https://download.inep.gov.br/enem/provas_e_gabaritos/2024_PV_impresso_D1_CD1.pdf",
+    "gabarito": "https://download.inep.gov.br/enem/provas_e_gabaritos/2024_GB_impresso_D1_CD1.pdf",
+    "enunciado": "El vírus de la cancelación\n\n¿De qué se trata este fenómeno? Se entiende por cultura de la cancelación a una práctica popular que consiste en “quitarle apoyo” especialmente a figuras públicas y compañías multinacionales después de que hayan hecho o dicho algo considerado objetable u ofensivo. Cuando alguien o algo está cancelado se descarta, se deja de ver, se deja de escuchar, se desclasifica, se aísla, se abandona, se niega, se deja de consumir hasta que eventualmente puede o no desaparecer. Es una estrategia muy extendida en la historia de las luchas anticoloniales, antiespecistas, sexodisidentes, feministas y, especialmente en nuestro país, también llevadas adelante por el movimiento de derechos humanos. Entonces, ¿dónde radica el problema? Se puede observar positivamente que hay un proceso cada vez más agudo de socialización de herramientas críticas para desmantelar formas de desigualdad incrustadas en los lazos sociales. Pero la popularización irrestricta y el uso amplificado de esta herramienta por fuera de sus contextos colectivos de emergencia han despertado efectos adversos en una sociedad atravesada por las pantallas como formas de encierro-consumo, la representación online como única esfera pública y un imperativo felicista cuya moral nos obliga a trabajar ansiosamente por una vida sin desacuerdos, sin errores y sin dolor, a como dé lugar.\n\nDisponível em: www.revistaanfibia.com. Acesso em: 7 out. 2021 (adaptado).\n\nNa argumentação apresentada sobre cultura do cancelamento, esse texto objetiva",
+    "alternativas": [
+      "apresentar o conceito desse tipo de prática.",
+      "mostrar a contrariedade das mídias com relação a essa atitude.",
+      "criticar o impacto dessa cultura sobre a vida representada nas redes.",
+      "evidenciar a democratização dessa prática na sociedade virtual.",
+      "discorrer historicamente sobre a origem e as causas dessa cultura."
+    ],
+    "correta": 2,
+    "explicacaoCerta": "O texto define a prática, mas sua argumentação culmina na crítica aos efeitos do uso irrestrito da cultura do cancelamento em uma sociedade mediada por telas e redes sociais.",
+    "explicacoesErradas": [
+      "A definição aparece, mas não esgota o propósito: o texto também avalia negativamente os efeitos do uso amplificado.",
+      "Não apresenta a reação das mídias; discute efeitos sociais e comunicacionais da prática.",
+      "",
+      "A socialização de ferramentas críticas é mencionada, mas o texto não celebra uma democratização; enfatiza efeitos adversos.",
+      "Menciona antecedentes históricos de lutas sociais, porém não investiga a origem e as causas históricas da cultura."
+    ]
+  },
+  {
+    "materia": "espanhol",
+    "ano": "2025",
+    "assunto": "9 de novembro de 2025 (1º dia) · Caderno 1 – Azul – aplicação regular",
+    "numero": "02",
+    "prova": "https://download.inep.gov.br/enem/provas_e_gabaritos/2025_PV_impresso_D1_CD1.pdf",
+    "gabarito": "https://download.inep.gov.br/enem/provas_e_gabaritos/2025_GB_impresso_D1_CD1.pdf",
+    "enunciado": "Guagua, las palabras también migran\n\nPocas palabras del idioma castellano despiertan tanto interés y asombro como guagua. En España su uso se reduce a las Islas Canarias, donde se registra a partir de los años 30 del pasado siglo. El origen de guagua resulta algo polémico. Todo parece indicar que la voz vino de Cuba. La trajeron de vuelta, junto con sus maletas y sus recuerdos, aquellos inmigrantes canarios que viajaron a la isla antillana en busca de fortuna. Recientemente en Lanzarote, las autoridades acuñaron “guagüismo” para potenciar el uso del transporte público y han solicitado a la Real Academia Española que introduzca dicho término en el diccionario. El origen de guagua cambia si nos vamos al sur del continente. Autobús no es la única acepción de la palabra guagua que se usa en América. En los países del sur, tales como Colombia, Argentina o Perú, como una derivación del término quechua wáwa, también se le dice guagua a un niño de pecho o bebé. Algunos autores chilenos han defendido también que esta acepción de guagua como bebé proviene del idioma mapuche. Sea uno u otro el origen, es común en todo el cono sur oír a hombres y mujeres hablar con ternura de sus “guaguas lindas”.\n\nDisponível em: www.escribirbienyclaro.com. Acesso em: 13 maio 2024.\n\nAo abordar a trajetória da palavra “guagua”, o texto destaca a",
+    "alternativas": [
+      "presença de empréstimo linguístico no espanhol.",
+      "validação de um vocábulo por uma instituição renomada.",
+      "concorrência entre línguas indígenas e a língua espanhola.",
+      "valorização da língua de um país em detrimento da de outro.",
+      "disputa entre hispano-americanos e espanhóis por sua origem."
+    ],
+    "correta": 0,
+    "explicacaoCerta": "A trajetória descrita envolve a circulação da palavra entre regiões e possíveis origens em outras línguas, incluindo o quéchua (e, segundo alguns autores, o mapuche): é um exemplo de empréstimo e contato linguístico no espanhol.",
+    "explicacoesErradas": [
+      "",
+      "A solicitação à Real Academia Espanhola refere-se ao neologismo “guagüismo”; o texto não informa que a instituição validou “guagua”.",
+      "O texto apresenta possíveis etimologias e sentidos, mas não descreve uma disputa ou concorrência entre línguas indígenas e o espanhol.",
+      "Não compara as línguas para valorizar uma em detrimento de outra; relata usos diferentes da palavra em regiões distintas.",
+      "O texto menciona origens possíveis e diversas, sem narrar uma disputa entre hispano-americanos e espanhóis."
+    ]
+  },
+  {
+    "materia": "historia",
+    "ano": "2022",
+    "assunto": "13 de novembro de 2022 (1º dia) · Caderno 1 – Azul – aplicação regular",
+    "numero": "50",
+    "prova": "https://download.inep.gov.br/enem/provas_e_gabaritos/2022_PV_impresso_D1_CD1.pdf",
+    "gabarito": "https://download.inep.gov.br/enem/provas_e_gabaritos/2022_GB_impresso_D1_CD1.pdf",
+    "enunciado": "Na construção da ferrovia Madeira-Mamoré, o que dizer dos doentes, eternos moribundos a vagar entre delírios febris, doses de quinino e corredores da morte? O Hospital da Candelária era santuário e túmulo, monumento ao progresso científico e preâmbulo da escuridão. Foi ali, com suas instalações moderníssimas, que médicos e sanitaristas dirigiram seu combate aos males tropicais. As maiores vítimas, contudo, permaneceriam na sombra à margem do palco, cobaias sem consolo, credores sem nome de uma sociedade que não lhes concedera tempo algum para ser decifrada.\n\nFOOT HARDMAN, F. Trem fantasma: modernidade na selva. São Paulo: Cia. das Letras, 1988 (adaptado).\n\nNo texto, há uma crítica ao modo de ocupação do espaço amazônico pautada na",
+    "alternativas": [
+      "discrepância entre engenharia ambiental e equilíbrio da fauna.",
+      "incoerência entre maquinaria estrangeira e controle da floresta.",
+      "incompatibilidade entre investimento estatal e proteção aos nativos.",
+      "competição entre farmacologia internacional e produtos da fitoterapia.",
+      "contradição entre desenvolvimento nacional e respeito aos trabalhadores."
+    ],
+    "correta": 4,
+    "explicacaoCerta": "O texto contrapõe o discurso de progresso à realidade dos trabalhadores adoecidos, tratados como cobaias e deixados sem reconhecimento. A crítica é à contradição entre desenvolvimento e desrespeito a quem o realizou.",
+    "explicacoesErradas": [
+      "O trecho não aborda engenharia ambiental nem equilíbrio da fauna; seu foco são os trabalhadores e as condições da ocupação.",
+      "Embora mencione instalações modernas, não critica o controle da floresta nem atribui o problema a maquinaria estrangeira.",
+      "A crítica não se concentra em investimento estatal ou proteção de povos nativos, mas no tratamento dado aos trabalhadores da ferrovia.",
+      "O quinino aparece como tratamento, mas o texto não contrapõe farmacologia internacional a fitoterapia.",
+      ""
+    ]
+  },
+  {
+    "materia": "historia",
+    "ano": "2023",
+    "assunto": "5 de novembro de 2023 (1º dia) · Caderno 1 – Azul – aplicação regular",
+    "numero": "47",
+    "prova": "https://download.inep.gov.br/enem/provas_e_gabaritos/2023_PV_impresso_D1_CD1.pdf",
+    "gabarito": "https://download.inep.gov.br/enem/provas_e_gabaritos/2023_GB_impresso_D1_CD1.pdf",
+    "enunciado": "Felizes tempos eram esses! As moças iam à missa de madrugada. De dia ninguém as via e se alguma, em dia de festa, queria passear com a avó ou a tia, havia de ir de cadeirinhas. Bem razão têm os nossos velhos de chorar por esses tempos, em que as filhas não sabiam escrever, e por isso não mandavam nem recebiam bilhetinhos.\n\nNovo Correio de Modas, 1853, apud DONEGÁ, A. L. Publicar ficção em meados do século XIX: um estudo das revistas femininas editadas pelos irmãos Laemmert. Campinas: Unicamp, 2013 (adaptado).\n\nNa perspectiva do autor, as tradições e os costumes sociofamiliares sofreram alterações, no século XIX, decorrentes de quais fatores?",
+    "alternativas": [
+      "Hábitos de leitura e mobilidade regional.",
+      "Circulação de impressos e trânsito religioso.",
+      "Valorização da língua e imigração estrangeira.",
+      "Práticas de letramento e transformação cultural.",
+      "Flexibilização do ensino e reformismo pedagógico."
+    ],
+    "correta": 3,
+    "explicacaoCerta": "A referência à escrita de bilhetes e à mudança dos costumes aponta para a expansão das práticas de leitura e escrita, que acompanhou transformações culturais e sociais no século XIX.",
+    "explicacoesErradas": [
+      "O texto menciona leitura e escrita, mas não deslocamentos ou mobilidade regional.",
+      "A missa é citada como parte da rotina antiga; não há indicação de trânsito religioso como causa da mudança.",
+      "O trecho não aborda imigração nem valorização da língua; trata da escrita e das mudanças nas relações e costumes.",
+      "",
+      "Não há referência a reformas pedagógicas ou flexibilização formal do ensino como explicação."
+    ]
+  },
+  {
+    "materia": "historia",
+    "ano": "2024",
+    "assunto": "3 de novembro de 2024 (1º dia) · Caderno 1 – Azul – aplicação regular",
+    "numero": "50",
+    "prova": "https://download.inep.gov.br/enem/provas_e_gabaritos/2024_PV_impresso_D1_CD1.pdf",
+    "gabarito": "https://download.inep.gov.br/enem/provas_e_gabaritos/2024_GB_impresso_D1_CD1.pdf",
+    "enunciado": "O bispo Bartolomeu de Las Casas é o homem mais odiado da América, o anti-Cristo dos senhores, o açoite destas terras. Por sua culpa, o imperador promulgou novas leis que despojam de escravos índios os filhos dos conquistadores. O que será deles sem os braços que os sustentam nas minas e nas lavouras? As novas leis estão arrancando a comida de suas bocas. Las Casas é o homem mais amado da América. Voz dos mudos, teimoso defensor dos que recebem pior tratamento que o esterco das praças, denunciador de quem por cobiça converte Jesus Cristo no mais cruel dos deuses e o rei em lobo faminto de carne humana.\n\nGALEANO, E. Os nascimentos. Porto Alegre: L&PM, 2011 (adaptado).\n\nOs diferentes pontos de vista presentes no texto expressam que o bispo era, ao mesmo tempo,",
+    "alternativas": [
+      "execrado pelos reis e reverenciado pelos religiosos do local.",
+      "detestado pelos colonizadores e respeitado pelos povos do lugar.",
+      "menosprezado pela colônia e idolatrado pelos governantes da região.",
+      "desrespeitado pela metrópole e adorado pelos invasores da Espanha.",
+      "desacatado pelos excluídos e valorizado pelos negociantes de negros."
+    ],
+    "correta": 1,
+    "explicacaoCerta": "Las Casas é odiado pelos colonizadores, que perderiam o trabalho compulsório indígena com as novas leis, e amado por aqueles cuja defesa ele assumiu. A oposição do texto é entre colonizadores e povos submetidos à exploração.",
+    "explicacoesErradas": [
+      "O texto apresenta o conflito com os senhores coloniais e a defesa dos indígenas, não uma oposição entre reis e religiosos locais.",
+      "",
+      "Não diz que a colônia o menosprezava nem que governantes regionais o idolatravam; o contraste é entre colonizadores e povos defendidos por ele.",
+      "O texto não apresenta a metrópole como agente de desrespeito nem invasores espanhóis como admiradores de Las Casas.",
+      "Os excluídos não o desacatam; ele é descrito como defensor deles. Tampouco há valorização por negociantes de pessoas escravizadas."
+    ]
+  },
+  {
+    "materia": "historia",
+    "ano": "2025",
+    "assunto": "9 de novembro de 2025 (1º dia) · Caderno 1 – Azul – aplicação regular",
+    "numero": "58",
+    "prova": "https://download.inep.gov.br/enem/provas_e_gabaritos/2025_PV_impresso_D1_CD1.pdf",
+    "gabarito": "https://download.inep.gov.br/enem/provas_e_gabaritos/2025_GB_impresso_D1_CD1.pdf",
+    "enunciado": "Em 1872, havia mais de 1 milhão de votantes, correspondentes a 13% da população livre. Em 1886, votaram nas eleições parlamentares pouco mais de 100 mil eleitores, ou 0,8% da população total. Houve um corte de quase 90% do eleitorado. O dado é chocante, sobretudo se lembrarmos que a tendência de todos os países europeus da época era na direção de ampliar os direitos políticos. O mais grave é que esse retrocesso foi duradouro. A Proclamação da República não alterou o quadro.\n\nCARVALHO, J. M. Cidadania no Brasil. Rio de Janeiro: Civilização Brasileira, 2002 (adaptado).\n\nDe acordo com o texto, a participação no processo eleitoral brasileiro após a Reforma de 1881 sofreu uma variação que se explica pela",
+    "alternativas": [
+      "restrição de gênero.",
+      "exclusão de imigrantes.",
+      "comprovação de domicílio.",
+      "exigência da alfabetização.",
+      "obrigatoriedade do sufrágio."
+    ],
+    "correta": 3,
+    "explicacaoCerta": "A Reforma de 1881 instituiu a exigência de saber ler e escrever para votar, excluindo grande parte da população, especialmente em um contexto de baixa alfabetização. Isso explica a forte redução do eleitorado descrita.",
+    "explicacoesErradas": [
+      "A restrição às mulheres não explica a queda associada à Reforma de 1881 apresentada no texto.",
+      "A exclusão de imigrantes não é o fator apontado para a redução do eleitorado descrita.",
+      "A comprovação de domicílio não corresponde à mudança que explica o corte eleitoral do período.",
+      "",
+      "A obrigatoriedade do voto não explica a diminuição; o texto trata da redução de quem podia participar."
+    ]
+  },
+  {
+    "materia": "geografia",
+    "ano": "2022",
+    "assunto": "1º dia — 13/11/2022 · Caderno 1 — Azul — Aplicação regular",
+    "numero": "87",
+    "prova": "https://download.inep.gov.br/enem/provas_e_gabaritos/2022_PV_impresso_D1_CD1.pdf",
+    "gabarito": "https://download.inep.gov.br/enem/provas_e_gabaritos/2022_GB_impresso_D1_CD1.pdf",
+    "enunciado": "Macrocefalia urbana pode ser entendida como a massiva concentração das atividades econômicas em algumas metrópoles que propicia o desencadeamento de processos descompassados: redirecionamento e convergência de fluxos migratórios, déficit no número de empregos, ocupação desordenada de determinadas regiões da cidade e estigmatização de estratos sociais, que comprometem substancialmente a segurança pública urbana. O processo de concentração espacial apresentado foi estimulado por qual fator geográfico?",
+    "alternativas": [
+      "Limitação da área ocupada.",
+      "Êxodo da população do campo.",
+      "Ampliação do risco habitacional.",
+      "Deficiência do transporte alternativo.",
+      "Crescimento da taxa de fecundidade."
+    ],
+    "correta": 1,
+    "explicacaoCerta": "O êxodo rural amplia os fluxos migratórios para as metrópoles e concentra população e atividades nelas, estimulando a macrocefalia urbana.",
+    "explicacoesErradas": [
+      "O enunciado não aponta limites físicos de área como causa; o fator é o deslocamento populacional em direção às metrópoles.",
+      "",
+      "O risco habitacional pode decorrer da ocupação urbana desordenada, mas não é o fator que estimula a concentração descrita.",
+      "A deficiência de transporte alternativo não é apresentada como causa da concentração espacial.",
+      "A fecundidade diz respeito ao crescimento natural da população, não explica por si só o fluxo do campo para as cidades."
+    ]
+  },
+  {
+    "materia": "geografia",
+    "ano": "2023",
+    "assunto": "1º dia — 05/11/2023 · Caderno 1 — Azul — Aplicação regular",
+    "numero": "71",
+    "prova": "https://download.inep.gov.br/enem/provas_e_gabaritos/2023_PV_impresso_D1_CD1.pdf",
+    "gabarito": "https://download.inep.gov.br/enem/provas_e_gabaritos/2023_GB_impresso_D1_CD1.pdf",
+    "enunciado": "Alternativas logísticas estão servindo de instrumentos que ativam os mercados especuladores de terras nas diferentes regiões da Amazônia e constituem em indicadores utilizados por diferentes atores para defender ou denunciar o avanço da cultura da soja na região e, com ela, a retomada do desmatamento. É evidente que o crescimento do desmatamento tem a ver também com a expansão da soja, porém atribuir a ela o fator principal parece não totalmente correto. Parto da compreensão central de que a lógica que gera o desmatamento está articulada pelo tripé grileiros, madeireiros e pecuaristas. Na visão do autor, o problema central da situação descrita é desencadeado pela",
+    "alternativas": [
+      "apropriação de áreas devolutas.",
+      "sonegação de impostos federais.",
+      "incorporação de exportação ilegal.",
+      "desoneração de setores produtivos.",
+      "flexibilização de legislação ambiental."
+    ],
+    "correta": 0,
+    "explicacaoCerta": "A apropriação irregular de terras públicas (grilagem), junto à atuação de madeireiros e pecuaristas, corresponde ao mecanismo territorial destacado no texto como central para o desmatamento.",
+    "explicacoesErradas": [
+      "",
+      "A sonegação fiscal não é apontada pelo autor como eixo do processo descrito.",
+      "O texto aborda expansão da soja e desmatamento, não a incorporação de exportações ilegais.",
+      "Desoneração produtiva não aparece como causa na explicação apresentada.",
+      "Embora políticas ambientais possam influenciar o contexto, o texto atribui a lógica central à grilagem, à exploração madeireira e à pecuária."
+    ]
+  },
+  {
+    "materia": "geografia",
+    "ano": "2024",
+    "assunto": "1º dia — 03/11/2024 · Caderno 1 — Azul — Aplicação regular",
+    "numero": "88",
+    "prova": "https://download.inep.gov.br/enem/provas_e_gabaritos/2024_PV_impresso_D1_CD1.pdf",
+    "gabarito": "https://download.inep.gov.br/enem/provas_e_gabaritos/2024_GB_impresso_D1_CD1.pdf",
+    "enunciado": "A mudança do clima nas cidades brasileiras é um desafio de adaptação e equidade. Inundações, alagamentos e ondas de calor são cada vez mais frequentes e intensas. Cidades precisam se adaptar com urgência, a começar pelas áreas e populações mais vulneráveis. Implementar soluções baseadas na natureza de forma sistêmica pode contribuir para a redução de desastres relacionados às mudanças do clima e ainda gerar múltiplos benefícios para a economia, o ambiente e as pessoas. Qual medida atenua os problemas abordados no texto?",
+    "alternativas": [
+      "Criação de faixas sinalizadoras.",
+      "Incineração de resíduos sólidos.",
+      "Implantação de parques públicos.",
+      "Verticalização de espaços centrais.",
+      "Construção de estacionamentos privados."
+    ],
+    "correta": 2,
+    "explicacaoCerta": "Parques públicos ampliam a cobertura vegetal e a infiltração da água, ajudando a reduzir alagamentos e a amenizar ilhas de calor; são uma solução baseada na natureza.",
+    "explicacoesErradas": [
+      "Faixas sinalizadoras organizam a circulação, mas não reduzem diretamente alagamentos nem ondas de calor.",
+      "A incineração não é uma solução baseada na natureza e pode ampliar emissões atmosféricas.",
+      "",
+      "A verticalização, por si só, não reduz os impactos climáticos citados nem oferece a infraestrutura verde descrita.",
+      "Estacionamentos privados tendem a ampliar superfícies impermeáveis, podendo agravar o escoamento e o calor urbano."
+    ]
+  },
+  {
+    "materia": "geografia",
+    "ano": "2025",
+    "assunto": "1º dia — 09/11/2025 · Caderno 1 — Azul — Aplicação regular",
+    "numero": "56",
+    "prova": "https://download.inep.gov.br/enem/provas_e_gabaritos/2025_PV_impresso_D1_CD1.pdf",
+    "gabarito": "https://download.inep.gov.br/enem/provas_e_gabaritos/2025_GB_impresso_D1_CD1.pdf",
+    "enunciado": "Por séculos, o Rio Reno tem sido uma rota de navegação confiável, ajudando a criar gigantes fabris ao longo de suas margens. No entanto, esses dias parecem estar no fim, pois o nível da água tem diminuído regularmente, o que impede a navegação fluvial do final do verão até o outono. Isso mostra como a crise climática atinge as economias dos países ricos. Qual é o efeito econômico do problema ambiental apresentado no texto?",
+    "alternativas": [
+      "Supressão da extração de minério.",
+      "Intensificação da atividade de pesca.",
+      "Encarecimento da logística de transporte.",
+      "Inviabilização da agricultura de subsistência.",
+      "Sucateamento da indústria de transformação."
+    ],
+    "correta": 2,
+    "explicacaoCerta": "Com menos água navegável, o transporte fluvial de cargas fica limitado; isso dificulta a logística e tende a elevar os custos de transporte.",
+    "explicacoesErradas": [
+      "O texto não relata interrupção da extração mineral; trata da redução da navegabilidade do rio.",
+      "A diminuição do nível da água não indica intensificação da pesca como efeito econômico.",
+      "",
+      "Agricultura de subsistência não é a atividade econômica ligada à rota industrial e fluvial descrita.",
+      "O texto aponta impacto na navegação e no transporte, não sucateamento das fábricas."
+    ]
+  },
+  {
+    "materia": "filosofia",
+    "ano": "2022",
+    "assunto": "1º dia — 13 de novembro · Caderno 1 – Azul – Aplicação regular",
+    "numero": "88",
+    "prova": "https://download.inep.gov.br/enem/provas_e_gabaritos/2022_PV_impresso_D1_CD1.pdf",
+    "gabarito": "https://download.inep.gov.br/enem/provas_e_gabaritos/2022_GB_impresso_D1_CD1.pdf",
+    "enunciado": "Entretanto, nosso amigo Basso tem o ânimo alegre. Isso resulta da filosofia: estar alegre diante da morte, forte e contente qualquer que seja o estado do corpo, sem desfalecer, ainda que desfaleça. SÊNECA, L. Cartas morais. Lisboa: Calouste Gulbenkian, 1990. O excerto refere-se a uma carta de Sêneca na qual se apresenta como um bem fundamental da filosofia promover a",
+    "alternativas": [
+      "valorização de disputas dialógicas.",
+      "rejeição das convenções sociais.",
+      "inspiração de natureza religiosa.",
+      "exaltação do sofrimento.",
+      "moderação das paixões."
+    ],
+    "correta": 4,
+    "explicacaoCerta": "A serenidade diante da morte e das condições do corpo representa domínio de si; para o estoicismo de Sêneca, a filosofia modera as paixões em vez de deixar que elas determinem a vida.",
+    "explicacoesErradas": [
+      "O trecho não menciona debate ou disputa dialógica; descreve uma disposição interior diante da morte.",
+      "Não propõe rejeitar convenções sociais, mas cultivar firmeza e contentamento mesmo diante da adversidade.",
+      "O bem apresentado decorre da filosofia, não de inspiração ou prática religiosa.",
+      "Estar contente mesmo quando o corpo desfalece não significa exaltar o sofrimento, e sim não se deixar dominar por ele.",
+      ""
+    ]
+  },
+  {
+    "materia": "filosofia",
+    "ano": "2023",
+    "assunto": "1º dia — 5 de novembro · Caderno 1 – Azul – Aplicação regular",
+    "numero": "90",
+    "prova": "https://download.inep.gov.br/enem/provas_e_gabaritos/2023_PV_impresso_D1_CD1.pdf",
+    "gabarito": "https://download.inep.gov.br/enem/provas_e_gabaritos/2023_GB_impresso_D1_CD1.pdf",
+    "enunciado": "Não tinha outra filosofia. Nem eu. Não digo que a Universidade me não tivesse ensinado alguma; mas eu decorei-lhe só as fórmulas, o vocabulário, o esqueleto. Tratei-a como tratei o latim; embolsei três versos de Virgílio, dois de Horácio, uma dúzia de locuções morais e políticas, para as despesas da conversação. Tratei-os como tratei a história e a jurisprudência. Colhi de todas as cousas a fraseologia, a casca, a ornamentação. ASSIS, M. Memórias póstumas de Brás Cubas. Belo Horizonte: Autêntica, 1999. A descrição crítica do personagem de Machado de Assis assemelha-se às características dos sofistas, contestados pelos filósofos gregos da Antiguidade, porque se mostra alinhada à",
+    "alternativas": [
+      "elaboração conceitual de entendimentos.",
+      "utilização persuasiva do discurso.",
+      "narração alegórica dos rapsodos.",
+      "investigação empírica da physis.",
+      "expressão pictográfica da pólis."
+    ],
+    "correta": 1,
+    "explicacaoCerta": "O personagem recolhe fórmulas e expressões para usá-las na conversação, como ornamento. Isso se aproxima da valorização sofística da eficácia persuasiva do discurso, em vez da investigação filosófica em busca de conhecimento.",
+    "explicacoesErradas": [
+      "O texto critica justamente a apropriação superficial de fórmulas, não a elaboração conceitual de entendimentos.",
+      "",
+      "A narração alegórica dos rapsodos não é o traço destacado no trecho; a crítica recai sobre o uso retórico de frases feitas.",
+      "Não há investigação da natureza (physis); o personagem apenas memoriza linguagem e fórmulas.",
+      "Nada indica expressão pictográfica da pólis; o foco é a retórica empregada na conversação."
+    ]
+  },
+  {
+    "materia": "filosofia",
+    "ano": "2024",
+    "assunto": "1º dia — 3 de novembro · Caderno 1 – Azul – Aplicação regular",
+    "numero": "58",
+    "prova": "https://download.inep.gov.br/enem/provas_e_gabaritos/2024_PV_impresso_D1_CD1.pdf",
+    "gabarito": "https://download.inep.gov.br/enem/provas_e_gabaritos/2024_GB_impresso_D1_CD1.pdf",
+    "enunciado": "TEXTO I Aristóteles entendia que a felicidade era diretamente ligada ao respeito pela própria natureza e, de certa maneira, a uma vida que tivesse na natureza de si mesma uma referência inabalável. Isso lhe permitiu formular o conceito de excelência. O que seria excelência? Seria, justamente, ao longo da vida, tirar de si mesmo, em forma de performance, de conduta, de comportamento, de disposição, o que a natureza permitiria de melhor. COEN, M.; BARROS FILHO, C. A monja e o professor: reflexões sobre ética, preceitos e valores. Rio de Janeiro: Best Seller, 2018. TEXTO II A noção de eudaimonia é central para a ética aristotélica. A eudaimonia é uma atividade e não um estado psicológico, pois é definida na Ética a Nicômaco como uma atividade da alma com base na virtude moral. A virtude moral é definida em termos de uma disposição diretamente ligada à deliberação, o que o leva a estudar a virtude intelectual que opera em seu interior, isto é, a prudência. A estrutura conceitual da ética aristotélica responde a uma tentativa de elucidar conceitualmente em que consiste isto, agir bem, ou, na linguagem aristotélica, o que significa ser feliz. ZINGANO, M. Eudaimonia, razão e contemplação na ética aristotélica. Analytica, n. 1, 2017 (adaptado). Os textos indicam que a prática de ações virtuosas, sempre efetivada na pólis, ocorre por meio do(a)",
+    "alternativas": [
+      "teoria das formas essenciais.",
+      "identificação dos princípios racionais.",
+      "desenvolvimento das técnicas retóricas.",
+      "aperfeiçoamento das condutas humanas.",
+      "conhecimento das epistemes verdadeiras."
+    ],
+    "correta": 3,
+    "explicacaoCerta": "Os textos definem a felicidade como atividade virtuosa e excelência expressa ao longo da vida em condutas e disposições. Portanto, ações virtuosas se efetivam pelo aperfeiçoamento das condutas humanas.",
+    "explicacoesErradas": [
+      "A teoria das formas essenciais remete a uma explicação platônica, não à prática ética aristotélica descrita.",
+      "A razão e a prudência são relevantes, mas a alternativa não expressa o modo de realização da virtude enfatizado pelos textos: formar e aperfeiçoar a conduta.",
+      "Os textos tratam de virtude moral e prudência, não do desenvolvimento de técnicas retóricas.",
+      "",
+      "A questão é sobre agir bem e exercer a virtude na vida prática, não sobre conhecer verdades epistemológicas."
+    ]
+  },
+  {
+    "materia": "filosofia",
+    "ano": "2025",
+    "assunto": "1º dia — 9 de novembro · Caderno 1 – Azul – Aplicação regular",
+    "numero": "82",
+    "prova": "https://download.inep.gov.br/enem/provas_e_gabaritos/2025_PV_impresso_D1_CD1.pdf",
+    "gabarito": "https://download.inep.gov.br/enem/provas_e_gabaritos/2025_GB_impresso_D1_CD1.pdf",
+    "enunciado": "A cidade justa é governada pelos filósofos, administrada pelos cientistas, protegida pelos guerreiros e mantida pelos produtores. Cada classe cumprirá sua função para o bem da pólis, racionalmente dirigida pelos filósofos. Em contrapartida, a cidade injusta é aquela onde o governo está nas mãos dos proprietários — que não pensam no bem comum da pólis e lutarão por interesses econômicos particulares. CHAUÍ, M. Convite à filosofia. São Paulo: Ática, 2000. O texto apresenta a estrutura de governo da cidade ideal pensada por Platão, que postula uma indissociabilidade entre",
+    "alternativas": [
+      "cognoscência e relação intersubjetiva.",
+      "mitologia e teorias cosmogônicas.",
+      "cidadania e primazia da retórica.",
+      "moralidade e virtudes cardeais.",
+      "ética e exercício do poder."
+    ],
+    "correta": 4,
+    "explicacaoCerta": "Na cidade ideal descrita, o governo dos filósofos é orientado ao bem comum e à justiça. A organização política do poder está, portanto, ligada à ética.",
+    "explicacoesErradas": [
+      "Embora haja uma direção racional, a questão não propõe relacionar conhecimento e interação entre sujeitos; trata da justificação ética do governo.",
+      "O trecho não discute mitos nem explicações sobre a origem do cosmos.",
+      "A retórica não é apresentada como fundamento da cidadania; o texto contrapõe o governo orientado ao bem comum aos interesses particulares dos proprietários.",
+      "Virtudes podem ser associadas à filosofia platônica, mas a relação enfatizada no enunciado é entre a ética e o exercício do poder político.",
+      ""
+    ]
+  },
+  {
+    "materia": "sociologia",
+    "ano": "2022",
+    "assunto": "1º dia — 13 de novembro de 2022 · Caderno 1, Azul (1ª Aplicação)",
+    "numero": "73",
+    "prova": "https://download.inep.gov.br/enem/provas_e_gabaritos/2022_PV_impresso_D1_CD1.pdf",
+    "gabarito": "https://download.inep.gov.br/enem/provas_e_gabaritos/2022_GB_impresso_D1_CD1.pdf",
+    "enunciado": "A história do Primeiro de Maio de 1890 — na França e na Europa, o primeiro de todos os Primeiros de Maio — é, sob vários aspectos, exemplar. Resultante de um ato político deliberado, essa manifestação ilustra o lado voluntário da construção de uma classe — a classe operária — à qual os socialistas tentam dar uma unidade política e cultural através daquela pedagogia da festa cujo princípio, eficácia e limites há muito tempo tinham sido experimentados pela Revolução Francesa.\n\nPERROT, M. Os excluídos da história: operários, mulheres e prisioneiros. Rio de Janeiro: Paz e Terra, 1988.\n\nCom base no texto, a fixação dessa data comemorativa tinha por objetivo",
+    "alternativas": [
+      "valorizar um sentimento burguês.",
+      "afirmar uma identidade coletiva.",
+      "edificar uma memória nacional.",
+      "criar uma comunidade cívica.",
+      "definir uma tradição popular."
+    ],
+    "correta": 1,
+    "explicacaoCerta": "O texto descreve o Primeiro de Maio como uma ação deliberada para dar unidade política e cultural à classe operária. A comemoração, portanto, ajudava trabalhadores a reconhecerem-se como um grupo com identidade e interesses coletivos.",
+    "explicacoesErradas": [
+      "O texto trata da construção da classe operária, não da valorização de sentimentos ou interesses burgueses.",
+      "",
+      "A finalidade apresentada é unir uma classe social, não criar uma memória nacional abrangente.",
+      "Não se propõe constituir uma comunidade cívica geral; o foco é a identidade política e cultural dos trabalhadores.",
+      "A data não é descrita como tradição popular espontânea, mas como iniciativa política deliberada para construir unidade de classe."
+    ]
+  },
+  {
+    "materia": "sociologia",
+    "ano": "2023",
+    "assunto": "1º dia — 5 de novembro de 2023 · Caderno 1, Azul",
+    "numero": "86",
+    "prova": "https://download.inep.gov.br/enem/provas_e_gabaritos/2023_PV_impresso_D1_CD1.pdf",
+    "gabarito": "https://download.inep.gov.br/enem/provas_e_gabaritos/2023_GB_impresso_D1_CD1.pdf",
+    "enunciado": "Durante a Revolução Francesa, um certo padre Niollant escondeu-se no pequeno castelo de L’Escarbas. Pagou amplamente a hospitalidade do velho fidalgo ocupando-se da educação de sua filha, Anaïs. A presença da mãe em nada modificou essa educação masculina dada a uma jovem criatura já muito inclinada à independência em virtude da vida no campo. O padre transmitiu à aluna sua intrepidez de opiniões e sua facilidade de julgamento, sem pensar que essas qualidades, tão necessárias num homem, se tornam defeitos numa mulher destinada aos humildes afazeres de mãe de família. Embora o padre recomendasse continuamente à aluna ser tanto mais graciosa e modesta quanto seu saber era mais extenso, a senhorita de Nègrepelisse ficou com excelente opinião de si mesma.\n\nBALZAC, H. Ilusões perdidas. São Paulo: Penguin Classics; Cia. das Letras, 2011 (adaptado).\n\nO comportamento desenvolvido pela personagem evidencia uma postura de",
+    "alternativas": [
+      "abandono de laços afetivos.",
+      "negação da ideia de subjetividade.",
+      "aceitação da hierarquia de gênero.",
+      "consolidação da estratificação social.",
+      "ruptura de valores institucionalizados."
+    ],
+    "correta": 4,
+    "explicacaoCerta": "Anaïs desenvolve autonomia, opiniões firmes e confiança intelectual, contrariando o ideal social descrito no texto de que mulheres deveriam ser modestas e restritas ao papel doméstico. Sua postura evidencia ruptura com valores institucionalizados de gênero.",
+    "explicacoesErradas": [
+      "O trecho não informa rompimento ou abandono de vínculos afetivos; aborda educação e expectativas sociais de gênero.",
+      "A personagem demonstra opinião própria e autoconfiança, não nega a subjetividade.",
+      "Ela não aceita passivamente a hierarquia de gênero: sua independência e sua autoavaliação a desafiam.",
+      "O texto não focaliza a manutenção ou consolidação de classes sociais, mas as normas sobre o comportamento feminino.",
+      ""
+    ]
+  },
+  {
+    "materia": "sociologia",
+    "ano": "2024",
+    "assunto": "1º dia — 3 de novembro de 2024 · Caderno 1, Azul",
+    "numero": "63",
+    "prova": "https://download.inep.gov.br/enem/provas_e_gabaritos/2024_PV_impresso_D1_CD1.pdf",
+    "gabarito": "https://download.inep.gov.br/enem/provas_e_gabaritos/2024_GB_impresso_D1_CD1.pdf",
+    "enunciado": "Uma das principais atividades provocadas pela arte, a reflexão, é abandonada pela indústria cultural. A indústria cultural seria como uma isca que ilude os indivíduos, com o sonho de que eles são livres, originais, únicos e especiais quando, na verdade, os trata como servos e partes de uma massa homogênea.\n\nFONTES, B.; MAGALHÃES, R. O que é indústria cultural? In: BODART, C. N. (Org.). Conceitos e categorias do ensino de sociologia. Maceió: Café com Sociologia, 2021 (adaptado).\n\nAo analisar as consequências da dinâmica apresentada no texto, as autoras destacam a importância do conceito como:",
+    "alternativas": [
+      "Ferramenta de luta coletiva.",
+      "Mecanismo de controle social.",
+      "Instituição de interesse público.",
+      "Organização da iniciativa privada.",
+      "Instrumento de manipulação estatal."
+    ],
+    "correta": 1,
+    "explicacaoCerta": "A indústria cultural, conforme o trecho, ilude as pessoas com uma aparência de liberdade e singularidade enquanto as integra a uma massa homogênea. Essa padronização atua como mecanismo de controle social.",
+    "explicacoesErradas": [
+      "O conceito não é apresentado como ferramenta de mobilização ou luta coletiva; o trecho destaca a submissão e a homogeneização.",
+      "",
+      "Não se descreve uma instituição pública ou de interesse público, mas uma dinâmica que influencia indivíduos e cultura.",
+      "A alternativa menciona um tipo de organização econômica, mas não expressa a consequência social de ilusão e homogeneização descrita.",
+      "O texto não atribui a dinâmica à manipulação promovida pelo Estado; trata da indústria cultural e de seus efeitos sociais."
+    ]
+  },
+  {
+    "materia": "sociologia",
+    "ano": "2025",
+    "assunto": "1º dia — 9 de novembro de 2025 · Caderno 1, Azul",
+    "numero": "81",
+    "prova": "https://download.inep.gov.br/enem/provas_e_gabaritos/2025_PV_impresso_D1_CD1.pdf",
+    "gabarito": "https://download.inep.gov.br/enem/provas_e_gabaritos/2025_GB_impresso_D1_CD1.pdf",
+    "enunciado": "Em decorrência da naturalização da inferioridade social da mulher e da concepção de justiça do Estado, baseada na igualdade abstratamente concebida, torna-se possível convencer o Estado burguês a conceber e implementar políticas públicas cujo conteúdo se define pela discriminação positiva de mulheres, embora isso aparentemente seja paradoxal.\n\nSAFFIOTI, H.; ALMEIDA, S. S. Violência de gênero, poder e impotência. Rio de Janeiro: Revinter, 1995 (adaptado).\n\nNo contexto atual, qual medida atende ao tipo de política pública abordada no texto?",
+    "alternativas": [
+      "Ampliação do sufrágio universal.",
+      "Diminuição da jornada de trabalho.",
+      "Extinção do crime de feminicídio.",
+      "Redução da licença-maternidade.",
+      "Criação de delegacia especializada."
+    ],
+    "correta": 4,
+    "explicacaoCerta": "Uma delegacia especializada é uma medida direcionada a atender mulheres e responder a violências e desigualdades específicas; por isso, corresponde a uma política pública de discriminação positiva, isto é, voltada a enfrentar uma desvantagem social concreta.",
+    "explicacoesErradas": [
+      "A ampliação do sufrágio universal estende um direito político geral, mas não é, por si, uma medida direcionada à desigualdade específica descrita.",
+      "Diminuir a jornada pode ser uma política trabalhista ampla, mas a alternativa não indica ação específica de proteção ou atendimento às mulheres.",
+      "Extinguir o crime de feminicídio eliminaria uma proteção legal contra violência de gênero, em vez de promover ação positiva.",
+      "Reduzir a licença-maternidade diminuiria um direito relacionado à maternidade, não constituindo medida positiva de enfrentamento da desigualdade.",
+      ""
+    ]
+  },
+  {
+    "materia": "biologia",
+    "ano": "2022",
+    "assunto": "2º dia (20/11/2022) · Caderno 5 – Amarelo",
+    "numero": "104",
+    "prova": "https://download.inep.gov.br/enem/provas_e_gabaritos/2022_PV_impresso_D2_CD5.pdf",
+    "gabarito": "https://download.inep.gov.br/enem/provas_e_gabaritos/2022_GB_impresso_D2_CD5.pdf",
+    "enunciado": "A extinção de espécies é uma ameaça real que afeta diversas regiões do país. A introdução de espécies exóticas pode ser considerada um fator maximizador desse processo. A jaqueira (Artocarpus heterophyllus), por exemplo, é uma árvore originária da Índia e de regiões do Sudeste Asiático que foi introduzida ainda na era colonial e se aclimatou muito bem em praticamente todo o território nacional. Casos como o dessa árvore podem provocar a redução da biodiversidade, pois elas",
+    "alternativas": [
+      "ocupam áreas de vegetação nativa e substituem parcialmente a flora original.",
+      "estimulam a competição por seus frutos entre animais típicos da região e eliminam as espécies perdedoras.",
+      "alteram os nichos e aumentam o número de possibilidades de relações entre os seres vivos daquele ambiente.",
+      "apresentam alta taxa de reprodução e se mantêm com um número de indivíduos superior à capacidade suporte do ambiente.",
+      "diminuem a relação de competição entre os polinizadores e facilitam a ação de dispersores de sementes de espécies nativas."
+    ],
+    "correta": 0,
+    "explicacaoCerta": "A espécie exótica pode ocupar áreas nativas e substituir parte da flora original, reduzindo a riqueza de espécies e, portanto, a biodiversidade.",
+    "explicacoesErradas": [
+      "",
+      "A competição por frutos entre animais não é o mecanismo indicado no enunciado para a redução da biodiversidade; a alternativa A descreve diretamente a substituição da vegetação nativa.",
+      "Aumentar possibilidades de relações entre seres vivos não explica a redução da biodiversidade apresentada.",
+      "A afirmação sobre exceder a capacidade de suporte não é o mecanismo descrito; a redução decorre da ocupação e substituição da flora nativa.",
+      "Facilitar polinização e dispersão de espécies nativas não explica a perda de biodiversidade causada pela jaqueira invasora."
+    ]
+  },
+  {
+    "materia": "biologia",
+    "ano": "2023",
+    "assunto": "2º dia (12/11/2023) · Caderno 5 – Amarelo",
+    "numero": "109",
+    "prova": "https://download.inep.gov.br/enem/provas_e_gabaritos/2023_PV_impresso_D2_CD5.pdf",
+    "gabarito": "https://download.inep.gov.br/enem/provas_e_gabaritos/2023_GB_impresso_D2_CD5.pdf",
+    "enunciado": "Durante a evolução das plantas, ocorreu uma transição do ambiente aquático para o ambiente terrestre graças ao surgimento de algumas estruturas que as tornaram independentes da água. Esse fato permitiu maior dispersão desse grupo de seres vivos, sendo possível observá-los em diferentes ambientes na atualidade. Qual estrutura possibilitou a independência da água para a fecundação dos seres vivos citados acima?",
+    "alternativas": [
+      "Fruto.",
+      "Esporo.",
+      "Semente.",
+      "Tubo polínico.",
+      "Vaso condutor."
+    ],
+    "correta": 3,
+    "explicacaoCerta": "O tubo polínico conduz os gametas masculinos até o óvulo, permitindo a fecundação sem que eles precisem nadar em água externa, como ocorre em grupos vegetais mais antigos.",
+    "explicacoesErradas": [
+      "O fruto se forma após a fecundação e auxilia na proteção ou dispersão das sementes; não transporta gametas até o óvulo.",
+      "O esporo é uma célula reprodutiva, mas não é a estrutura que leva o gameta masculino ao óvulo sem dependência de água.",
+      "A semente também se forma depois da fecundação e protege o embrião; não viabiliza o encontro dos gametas.",
+      "",
+      "O vaso condutor transporta água e substâncias pela planta, não participa diretamente da fecundação."
+    ]
+  },
+  {
+    "materia": "biologia",
+    "ano": "2024",
+    "assunto": "2º dia (10/11/2024) · Caderno 5 – Amarelo",
+    "numero": "131",
+    "prova": "https://download.inep.gov.br/enem/provas_e_gabaritos/2024_PV_impresso_D2_CD5.pdf",
+    "gabarito": "https://download.inep.gov.br/enem/provas_e_gabaritos/2024_GB_impresso_D2_CD5.pdf",
+    "enunciado": "Sistemas agroflorestais (SAFs) Os sistemas agroflorestais alinham os interesses econômicos aos ecológicos. Esses sistemas podem ser usados na recuperação ambiental de áreas degradadas que se tornaram pouco produtivas, como as utilizadas por muito tempo para pastagem. Para isso, num primeiro momento, as árvores nativas são plantadas em conjunto com culturas agrícolas anuais, como feijão, mandioca, milho e abóbora, que geram renda para os proprietários da terra e incentivam a manutenção do sistema. Em um segundo momento, são introduzidas outras espécies, como trepadeiras e arbustos, de acordo com um arranjo espacial e temporal preestabelecido. Nesse processo, ocorrerão mudanças graduais na estrutura e composição das comunidades vegetais ao longo do tempo, que culminarão no aumento da diversidade do ambiente. O conjunto dessas mudanças graduais é análogo ao processo natural denominado",
+    "alternativas": [
+      "rotação de culturas.",
+      "sucessão ecológica.",
+      "coevolução específica.",
+      "adaptação por seleção.",
+      "convergência adaptativa."
+    ],
+    "correta": 1,
+    "explicacaoCerta": "A sucessão ecológica é a mudança gradual na composição e estrutura de uma comunidade ao longo do tempo, culminando em comunidades mais complexas e diversas; é o processo análogo descrito.",
+    "explicacoesErradas": [
+      "Rotação de culturas é a alternância planejada de cultivos agrícolas, não a transformação gradual de comunidades ecológicas.",
+      "",
+      "Coevolução envolve mudanças evolutivas recíprocas entre espécies, não a substituição gradual de espécies numa comunidade.",
+      "Adaptação por seleção diz respeito a mudanças hereditárias em populações ao longo das gerações, não à sequência de comunidades descrita.",
+      "Convergência adaptativa é o surgimento independente de características semelhantes em linhagens diferentes, não a mudança gradual da comunidade vegetal."
+    ]
+  },
+  {
+    "materia": "biologia",
+    "ano": "2025",
+    "assunto": "2º dia (16/11/2025) · Caderno 5 – Amarelo",
+    "numero": "133",
+    "prova": "https://download.inep.gov.br/enem/provas_e_gabaritos/2025_PV_impresso_D2_CD5.pdf",
+    "gabarito": "https://download.inep.gov.br/enem/provas_e_gabaritos/2025_GB_impresso_D2_CD5.pdf",
+    "enunciado": "A maioria dos seres vivos tem um relógio biológico (ciclo circadiano), que regula as mudanças metabólicas e comportamentais de acordo com o ciclo de 24 horas de rotação da Terra. Em 2015, um artigo publicado na revista Science Advantage mostrou ser possível a transferência dos genes do relógio circadiano da cianobactéria Synechococcus elongatus para o genoma da bactéria Escherichia coli, um organismo não circadiano. Estarão presentes no organismo geneticamente modificado os genes do",
+    "alternativas": [
+      "metabolismo de E. coli, apenas.",
+      "ciclo circadiano de E. coli, apenas.",
+      "metabolismo de S. elongatus e do ciclo circadiano de E. coli.",
+      "ciclo circadiano de S. elongatus e do metabolismo de E. coli.",
+      "ciclo circadiano de S. elongatus e do ciclo circadiano de E. coli."
+    ],
+    "correta": 3,
+    "explicacaoCerta": "O organismo geneticamente modificado mantém os genes e o metabolismo próprios de E. coli e recebe os genes transferidos do ciclo circadiano de S. elongatus.",
+    "explicacoesErradas": [
+      "Desconsidera que genes do ciclo circadiano de S. elongatus foram transferidos.",
+      "E. coli é descrita como não circadiana; o ciclo circadiano não é próprio dela nem foi transferido para ela.",
+      "A alternativa atribui o metabolismo a S. elongatus e o ciclo circadiano a E. coli, invertendo os organismos de origem e destino.",
+      "",
+      "A questão informa que E. coli não é circadiana; portanto, não se trata de genes de ciclo circadiano de ambos os organismos."
+    ]
+  },
+  {
+    "materia": "quimica",
+    "ano": "2022",
+    "assunto": "2º dia (20/11/2022) · Caderno 7 – Azul – Aplicação regular",
+    "numero": "94",
+    "prova": "https://download.inep.gov.br/enem/provas_e_gabaritos/2022_PV_impresso_D2_CD7.pdf",
+    "gabarito": "https://download.inep.gov.br/enem/provas_e_gabaritos/2022_GB_impresso_D2_CD7.pdf",
+    "enunciado": "Os riscos apresentados pelos produtos dependem de suas propriedades e da reatividade quando em contato com outras substâncias. Para prevenir os riscos devido à natureza química dos produtos, devemos conhecer a lista de substâncias incompatíveis e de uso cotidiano em fábricas, hospitais e laboratórios, a fim de observar cuidados na estocagem, manipulação e descarte. O quadro elenca algumas dessas incompatibilidades, que podem levar à ocorrência de acidentes.\n\nSubstância | Incompatibilidade | Riscos associados\nÁcidos minerais fortes concentrados | Bases fortes; cianetos; hipoclorito de sódio | Reação enérgica, explosão, produção de oxidante forte e produto tóxico\nÁcido nítrico concentrado | Matéria orgânica | Reação enérgica, explosão e produto tóxico\n\nConsidere que houve o descarte indevido de dois conjuntos de substâncias: (1) ácido clorídrico concentrado com cianeto de potássio; (2) ácido nítrico concentrado com sacarose.\n\nDisponível em: www.fiocruz.br. Acesso em: 6 dez. 2017 (adaptado).\n\nO descarte dos conjuntos (1) e (2) resultará, respectivamente, em",
+    "alternativas": [
+      "liberação de gás tóxico e reação oxidativa forte.",
+      "reação oxidativa forte e liberação de gás tóxico.",
+      "formação de sais tóxicos e reação oxidativa forte.",
+      "liberação de gás tóxico e liberação de gás oxidante.",
+      "formação de sais tóxicos e liberação de gás oxidante."
+    ],
+    "correta": 0,
+    "explicacaoCerta": "O cianeto em meio ácido libera cianeto de hidrogênio, um gás muito tóxico. O ácido nítrico concentrado reage vigorosamente com a sacarose, que é matéria orgânica, em reação oxidativa forte. Portanto, a sequência corresponde à alternativa A.",
+    "explicacoesErradas": [
+      "",
+      "Inverte os dois resultados: o conjunto (1) libera gás tóxico; o conjunto (2) sofre reação oxidativa forte.",
+      "Não descreve adequadamente o primeiro conjunto: a acidificação do cianeto produz gás tóxico, não apenas sais tóxicos.",
+      "O segundo conjunto é caracterizado por reação oxidativa forte, não pela liberação de gás oxidante indicada na alternativa.",
+      "Não contempla a liberação de gás tóxico no conjunto (1) nem descreve corretamente o resultado do conjunto (2)."
+    ]
+  },
+  {
+    "materia": "quimica",
+    "ano": "2023",
+    "assunto": "2º dia (12/11/2023) · Caderno 7 – Azul – Aplicação regular",
+    "numero": "102",
+    "prova": "https://download.inep.gov.br/enem/provas_e_gabaritos/2023_PV_impresso_D2_CD7.pdf",
+    "gabarito": "https://download.inep.gov.br/enem/provas_e_gabaritos/2023_GB_impresso_D2_CD7.pdf",
+    "enunciado": "As cetonas fazem parte de famílias olfativas encontradas em muitos alimentos. A molécula de hexan-3-ona é um exemplo desses compostos voláteis responsáveis pelo aroma, podendo ser obtida por processos energéticos realizados em meio ácido, na presença de oxidantes como o permanganato de potássio.\n\nPara se produzir esse composto volátil em laboratório, deve-se oxidar a molécula de",
+    "alternativas": [
+      "hexanal.",
+      "hexan-1-ol.",
+      "hexan-3-ol.",
+      "hex-1-en-1-ol.",
+      "ácido hexanoico."
+    ],
+    "correta": 2,
+    "explicacaoCerta": "O hexan-3-ol é um álcool secundário. Sua oxidação converte o grupo –OH no carbono 3 em carbonila, formando a cetona hexan-3-ona.",
+    "explicacoesErradas": [
+      "O hexanal é um aldeído; sua oxidação leva a um ácido carboxílico, não à cetona indicada.",
+      "O hexan-1-ol é um álcool primário; sua oxidação produz aldeído e, em condições mais enérgicas, ácido carboxílico.",
+      "",
+      "O hex-1-en-1-ol não é o álcool secundário correspondente à hexan-3-ona; a oxidação de um álcool secundário é a conversão apropriada para formar a cetona pedida.",
+      "O ácido hexanoico já é uma função carboxílica bastante oxidada e não origina hexan-3-ona pela oxidação descrita."
+    ]
+  },
+  {
+    "materia": "quimica",
+    "ano": "2024",
+    "assunto": "2º dia (10/11/2024) · Caderno 7 – Azul – Aplicação regular",
+    "numero": "93",
+    "prova": "https://download.inep.gov.br/enem/provas_e_gabaritos/2024_PV_impresso_D2_CD7.pdf",
+    "gabarito": "https://download.inep.gov.br/enem/provas_e_gabaritos/2024_GB_impresso_D2_CD7.pdf",
+    "enunciado": "No senso comum, considera-se, ainda hoje, que compostos orgânicos são substâncias presentes nos seres vivos. Na Química, a expressão “compostos orgânicos” tem um uso histórico de mais de 200 anos, adquirindo diferentes conotações ao longo do desenvolvimento dessa ciência. Atualmente, atribui-se a essa expressão outro significado.\n\nA concepção científica atual define esses compostos como substâncias",
+    "alternativas": [
+      "benéficas à saúde humana.",
+      "capazes de serem biodegradadas.",
+      "formadas a partir de gás carbônico.",
+      "produzidas sem o uso de agrotóxicos.",
+      "contendo carbono como elemento principal."
+    ],
+    "correta": 4,
+    "explicacaoCerta": "Na classificação química atual, compostos orgânicos são, em geral, substâncias cujo elemento principal é o carbono. Essa definição não depende de serem produzidas por seres vivos ou de terem determinado efeito à saúde.",
+    "explicacoesErradas": [
+      "Ser benéfico à saúde não define uma substância como orgânica.",
+      "A biodegradabilidade não é critério para classificar um composto como orgânico.",
+      "A origem a partir de gás carbônico não é requisito para que uma substância seja classificada como orgânica.",
+      "O uso ou não de agrotóxicos não determina a classificação química do composto.",
+      ""
+    ]
+  },
+  {
+    "materia": "quimica",
+    "ano": "2025",
+    "assunto": "2º dia (16/11/2025) · Caderno 7 – Azul – Aplicação regular",
+    "numero": "110",
+    "prova": "https://download.inep.gov.br/enem/provas_e_gabaritos/2025_PV_impresso_D2_CD7.pdf",
+    "gabarito": "https://download.inep.gov.br/enem/provas_e_gabaritos/2025_GB_impresso_D2_CD7.pdf",
+    "enunciado": "A química nuclear é uma importante ferramenta na produção de substâncias utilizadas na área da saúde humana. A radiação emitida pelo cobalto-60 é utilizada na medicina como ferramenta de diagnóstico e no tratamento do câncer. No entanto, esse radioisótopo tem um tempo de armazenamento limitado, pois seu tempo de meia-vida é de 5,3 anos. Considere um frasco com uma amostra contendo 2,00 mg de cobalto-60, armazenado durante um período de 26,5 anos.\n\nA massa de cobalto-60, em miligrama, que restará ao final desse tempo é mais próxima de",
+    "alternativas": [
+      "2,00 mg.",
+      "1,00 mg.",
+      "0,40 mg.",
+      "0,13 mg.",
+      "0,06 mg."
+    ],
+    "correta": 4,
+    "explicacaoCerta": "O intervalo corresponde a 26,5 ÷ 5,3 = 5 meias-vidas. A massa restante é 2,00 × (1/2)^5 = 0,0625 mg, cujo valor mais próximo entre as alternativas é 0,06 mg (E).",
+    "explicacoesErradas": [
+      "2,00 mg seria a massa inicial, sem decaimento radioativo.",
+      "1,00 mg corresponde a apenas uma meia-vida, não às cinco transcorridas.",
+      "0,40 mg não corresponde à redução pela metade repetida cinco vezes.",
+      "0,13 mg também é superior à massa calculada após cinco meias-vidas, 0,0625 mg.",
+      ""
+    ]
+  },
+  {
+    "materia": "fisica",
+    "ano": "2022",
+    "assunto": "2º dia · Caderno 5 – Amarelo (aplicação regular)",
+    "numero": "105",
+    "prova": "https://download.inep.gov.br/enem/provas_e_gabaritos/2022_PV_impresso_D2_CD5.pdf",
+    "gabarito": "https://download.inep.gov.br/enem/provas_e_gabaritos/2022_GB_impresso_D2_CD5.pdf",
+    "enunciado": "Em um dia de calor intenso, dois colegas estão a brincar com a água da mangueira. Um deles quer saber até que altura o jato de água alcança, a partir da saída de água, quando a mangueira está posicionada totalmente na direção vertical. O outro colega propõe então o seguinte experimento: eles posicionarem a saída de água da mangueira na direção horizontal, a 1 m de altura em relação ao chão, e então medirem a distância horizontal entre a mangueira e o local onde a água atinge o chão. A medida dessa distância foi de 3 m, e a partir disso eles calcularam o alcance vertical do jato de água. Considere a aceleração da gravidade de 10 m s⁻².\n\nO resultado que eles obtiveram foi de",
+    "alternativas": [
+      "1,50 m.",
+      "2,25 m.",
+      "4,00 m.",
+      "4,50 m.",
+      "5,00 m."
+    ],
+    "correta": 1,
+    "explicacaoCerta": "Na saída horizontal, a queda de 1 m leva t = √(2h/g) = √0,2 s. Logo, a velocidade horizontal é 3/t. A velocidade vertical inicial que produziria esse mesmo alcance é igual a essa velocidade horizontal, e a altura máxima é v²/(2g) = 2,25 m.",
+    "explicacoesErradas": [
+      "1,50 m é menor que a altura obtida ao calcular a velocidade a partir do alcance de 3 m e do tempo de queda.",
+      "",
+      "4,00 m excede a altura calculada a partir da velocidade inferida no experimento.",
+      "4,50 m é o dobro do resultado; a relação altura = v²/(2g) não fornece esse valor.",
+      "5,00 m também não corresponde à altura calculada com g = 10 m/s² e o alcance medido de 3 m."
+    ]
+  },
+  {
+    "materia": "fisica",
+    "ano": "2023",
+    "assunto": "2º dia · Caderno 5 – Amarelo (aplicação regular)",
+    "numero": "95",
+    "prova": "https://download.inep.gov.br/enem/provas_e_gabaritos/2023_PV_impresso_D2_CD5.pdf",
+    "gabarito": "https://download.inep.gov.br/enem/provas_e_gabaritos/2023_GB_impresso_D2_CD5.pdf",
+    "enunciado": "Em uma indústria alimentícia, para produção de doce de leite, utiliza-se um tacho de parede oca com uma entrada para vapor de água a 120 °C e uma saída para água líquida em equilíbrio com o vapor a 100 °C. Ao passar pela parte oca do tacho, o vapor de água transforma-se em líquido, liberando energia. A parede transfere essa energia para o interior do tacho, resultando na evaporação de água e consequente concentração do produto.\n\nNo processo de concentração do produto, é utilizada energia proveniente",
+    "alternativas": [
+      "somente do calor latente de vaporização.",
+      "somente do calor latente de condensação.",
+      "do calor sensível e do calor latente de vaporização.",
+      "do calor sensível e do calor latente de condensação.",
+      "do calor latente de condensação e do calor latente de vaporização."
+    ],
+    "correta": 3,
+    "explicacaoCerta": "O vapor que entra a 120 °C esfria até 100 °C, cedendo calor sensível, e então se condensa, liberando calor latente de condensação. Essa energia é transferida ao tacho e permite evaporar a água do produto.",
+    "explicacoesErradas": [
+      "O calor latente de vaporização é absorvido pela água do produto; não é a energia liberada pelo vapor no tacho.",
+      "A condensação libera calor latente, mas a alternativa omite o calor sensível cedido quando o vapor esfria de 120 °C a 100 °C.",
+      "Inclui o calor sensível, mas atribui ao vapor calor latente de vaporização, quando ele se condensa.",
+      "",
+      "Inclui o calor latente de condensação, mas troca o calor sensível cedido pelo vapor por calor latente de vaporização."
+    ]
+  },
+  {
+    "materia": "fisica",
+    "ano": "2024",
+    "assunto": "2º dia · Caderno 5 – Amarelo (aplicação regular)",
+    "numero": "117",
+    "prova": "https://download.inep.gov.br/enem/provas_e_gabaritos/2024_PV_impresso_D2_CD5.pdf",
+    "gabarito": "https://download.inep.gov.br/enem/provas_e_gabaritos/2024_GB_impresso_D2_CD5.pdf",
+    "enunciado": "Uma ambulância em alta velocidade com a sirene ligada desloca-se em direção a um radar operado por uma pessoa. O radar emite ondas de rádio com frequência f₀ que são refletidas pela dianteira da ambulância, retornando para o detector com frequência fᵣ. A percepção do operador do radar, em relação ao som emitido pela sirene, é de que este se altera à medida que a ambulância se aproxima ou se afasta.\n\nDurante a aproximação, como o operador percebe o som da sirene e qual é a relação entre as frequências fᵣ e f₀ medidas pelo radar?",
+    "alternativas": [
+      "Mais grave do que o som emitido e fᵣ < f₀.",
+      "Mais agudo do que o som emitido e fᵣ < f₀.",
+      "Mais agudo do que o som emitido e fᵣ = f₀.",
+      "Mais agudo do que o som emitido e fᵣ > f₀.",
+      "Mais grave do que o som emitido e fᵣ > f₀."
+    ],
+    "correta": 3,
+    "explicacaoCerta": "Na aproximação, o efeito Doppler faz o observador perceber a sirene com frequência maior, portanto mais aguda. A onda de radar refletida pela ambulância que se aproxima também retorna com frequência maior que a emitida (fᵣ > f₀).",
+    "explicacoesErradas": [
+      "Prevê som mais grave e frequência refletida menor; ambas as relações contradizem a aproximação.",
+      "Acerta que o som é mais agudo, mas erra ao indicar fᵣ < f₀.",
+      "Acerta que o som é mais agudo, mas o radar mede frequência maior, não igual à emitida.",
+      "",
+      "Acerta que fᵣ > f₀, mas erra ao dizer que o som fica mais grave."
+    ]
+  },
+  {
+    "materia": "fisica",
+    "ano": "2025",
+    "assunto": "2º dia · Caderno 5 – Amarelo (aplicação regular)",
+    "numero": "105",
+    "prova": "https://download.inep.gov.br/enem/provas_e_gabaritos/2025_PV_impresso_D2_CD5.pdf",
+    "gabarito": "https://download.inep.gov.br/enem/provas_e_gabaritos/2025_GB_impresso_D2_CD5.pdf",
+    "enunciado": "A tirinha ilustra um processo físico em que uma onda sonora, produzida pela Mônica, causa a quebra das taças de cristal. O fenômeno ondulatório que provoca a quebra das taças só é possível em razão de uma característica da voz produzida pela Mônica naquele momento, que, diferentemente do que sugere a tirinha, não está relacionada à sua intensidade.\n\nEsse fenômeno e a característica associada à voz da Mônica são, respectivamente,",
+    "alternativas": [
+      "reflexão e comprimento de onda.",
+      "ressonância e frequência.",
+      "interferência e velocidade.",
+      "ressonância e timbre.",
+      "reflexão e amplitude."
+    ],
+    "correta": 1,
+    "explicacaoCerta": "A taça pode vibrar intensamente e quebrar quando a frequência do som coincide com sua frequência natural: ocorre ressonância. A condição depende da frequência, não simplesmente da intensidade da voz.",
+    "explicacoesErradas": [
+      "Reflexão é o retorno de uma onda ao encontrar uma interface; não explica a amplificação vibratória por coincidência de frequências.",
+      "",
+      "Interferência é a superposição de ondas, e velocidade não é a característica da voz que determina a ressonância da taça.",
+      "Identifica corretamente a ressonância, mas o timbre distingue a qualidade sonora e não determina a frequência de ressonância.",
+      "Reflexão e amplitude não representam o fenômeno nem a característica decisiva descritos."
+    ]
+  },
+  {
+    "materia": "matematica",
+    "ano": "2022",
+    "assunto": "2º dia — 20/11/2022 · Caderno 5 — Amarelo — aplicação regular",
+    "numero": "155",
+    "prova": "https://download.inep.gov.br/enem/provas_e_gabaritos/2022_PV_impresso_D2_CD5.pdf",
+    "gabarito": "https://download.inep.gov.br/enem/provas_e_gabaritos/2022_GB_impresso_D2_CD5.pdf",
+    "enunciado": "Um parque tem dois circuitos de tamanhos diferentes para corridas. Um corredor treina nesse parque e, no primeiro dia, inicia seu treino percorrendo 3 voltas em torno do circuito maior e 2 voltas em torno do menor, perfazendo um total de 1 800 m. Em seguida, dando continuidade a seu treino, corre mais 2 voltas em torno do circuito maior e 1 volta em torno do menor, percorrendo mais 1 100 m.\nNo segundo dia, ele pretende percorrer 5 000 m nos circuitos do parque, fazendo um número inteiro de voltas em torno deles e de modo que o número de voltas seja o maior possível.\nA soma do número de voltas em torno dos dois circuitos, no segundo dia, será",
+    "alternativas": [
+      "10.",
+      "13.",
+      "14.",
+      "15.",
+      "16."
+    ],
+    "correta": 4,
+    "explicacaoCerta": "Sejam M e m os comprimentos, em metros, dos circuitos maior e menor. As equações 3M + 2m = 1 800 e 2M + m = 1 100 dão M = 400 e m = 300. Para completar 5 000 m, x voltas maiores e y menores devem satisfazer 4x + 3y = 50. Como cada volta mede pelo menos 300 m, são possíveis no máximo 16 voltas; esse máximo é atingido com 2 voltas maiores e 14 menores (800 + 4 200 = 5 000).",
+    "explicacoesErradas": [
+      "10 voltas não podem totalizar 5 000 m: mesmo se todas fossem no circuito maior, somariam apenas 4 000 m.",
+      "13 voltas podem perfazer a distância, mas não maximizam a quantidade: há uma combinação válida com 16 voltas.",
+      "14 voltas também podem perfazer a distância, mas não são o máximo, pois 16 voltas são possíveis.",
+      "15 voltas também podem perfazer a distância, mas não são o máximo, pois 16 voltas são possíveis.",
+      ""
+    ]
+  },
+  {
+    "materia": "matematica",
+    "ano": "2023",
+    "assunto": "2º dia — 12/11/2023 · Caderno 5 — Amarelo — aplicação regular",
+    "numero": "156",
+    "prova": "https://download.inep.gov.br/enem/provas_e_gabaritos/2023_PV_impresso_D2_CD5.pdf",
+    "gabarito": "https://download.inep.gov.br/enem/provas_e_gabaritos/2023_GB_impresso_D2_CD5.pdf",
+    "enunciado": "Um agricultor é informado sobre um método de proteção para sua lavoura que consiste em inserir larvas específicas, de rápida reprodução. A reprodução dessas larvas faz com que sua população multiplique-se por 10 a cada 3 dias e, para evitar eventuais desequilíbrios, é possível cessar essa reprodução aplicando-se um produto X. O agricultor decide iniciar esse método com 100 larvas e dispõe de 5 litros do produto X, cuja aplicação recomendada é de exatamente 1 litro para cada população de 200 000 larvas. A quantidade total do produto X de que ele dispõe deverá ser aplicada de uma única vez.\nQuantos dias após iniciado esse método o agricultor deverá aplicar o produto X?",
+    "alternativas": [
+      "2",
+      "4",
+      "6",
+      "12",
+      "18"
+    ],
+    "correta": 3,
+    "explicacaoCerta": "Os 5 litros são suficientes para uma população de 1 000 000 larvas. Partindo de 100, são necessárias quatro multiplicações por 10 para chegar a 1 000 000: 100 × 10⁴. Cada multiplicação ocorre em 3 dias, portanto a aplicação deve ser feita após 12 dias.",
+    "explicacoesErradas": [
+      "Em 2 dias ainda não ocorreu sequer o primeiro intervalo completo de 3 dias; a população está abaixo de 1 000 000.",
+      "Após 4 dias ocorreu apenas um intervalo completo de reprodução: são 1 000 larvas, abaixo do limite de aplicação.",
+      "Após 6 dias são dois intervalos: 10 000 larvas, ainda abaixo de 1 000 000.",
+      "",
+      "Após 18 dias são seis intervalos: 100 000 000 larvas, muito acima da população para a qual os 5 litros são suficientes."
+    ]
+  },
+  {
+    "materia": "matematica",
+    "ano": "2024",
+    "assunto": "2º dia — 10/11/2024 · Caderno 5 — Amarelo — aplicação regular",
+    "numero": "156",
+    "prova": "https://download.inep.gov.br/enem/provas_e_gabaritos/2024_PV_impresso_D2_CD5.pdf",
+    "gabarito": "https://download.inep.gov.br/enem/provas_e_gabaritos/2024_GB_impresso_D2_CD5.pdf",
+    "enunciado": "O uso de aplicativos de transporte tem sido uma alternativa à população que busca preços mais competitivos para se locomover, principalmente nas grandes cidades. As formas usadas para determinar o valor cobrado por cada viagem variam de um aplicativo para outro, mas, em geral, o valor V a ser pago, em real, varia em função de:\n• tarifa base F: valor fixo, em real, cobrado no início da viagem;\n• tempo T: tempo, em minuto, de duração da viagem;\n• distância D: distância percorrida, em quilômetro.\nUm desses aplicativos cobra R$ 2,00 de valor fixo, acrescido de R$ 0,26 por minuto de viagem e de R$ 1,40 por quilômetro rodado.\nNessas condições, a expressão que fornece o valor V a ser pago por uma viagem desse aplicativo é",
+    "alternativas": [
+      "2,00F + 0,26T + 1,40D",
+      "2,00 + 0,26T + 1,40D",
+      "2,00 + 0,26T + D",
+      "0,26T + 1,40D",
+      "F + T + D"
+    ],
+    "correta": 1,
+    "explicacaoCerta": "O valor total é a tarifa fixa de R$ 2,00 somada a R$ 0,26 para cada minuto (0,26T) e R$ 1,40 para cada quilômetro (1,40D). Assim, V = 2,00 + 0,26T + 1,40D.",
+    "explicacoesErradas": [
+      "Multiplica indevidamente a tarifa fixa de R$ 2,00 pela variável F, embora o valor fixo já tenha sido informado como 2,00.",
+      "",
+      "Usa D sem o coeficiente de R$ 1,40 por quilômetro.",
+      "Omite a tarifa fixa de R$ 2,00 cobrada no início da viagem.",
+      "Soma F, T e D sem aplicar as tarifas informadas e não representa o valor fixo de R$ 2,00."
+    ]
+  },
+  {
+    "materia": "matematica",
+    "ano": "2025",
+    "assunto": "2º dia — 16/11/2025 · Caderno 5 — Amarelo — aplicação regular",
+    "numero": "152",
+    "prova": "https://download.inep.gov.br/enem/provas_e_gabaritos/2025_PV_impresso_D2_CD5.pdf",
+    "gabarito": "https://download.inep.gov.br/enem/provas_e_gabaritos/2025_GB_impresso_D2_CD5.pdf",
+    "enunciado": "Uma fábrica de tijolos ecológicos com 3 funcionários, cada um trabalhando 6 horas diárias, produz 720 unidades por dia. Para atender ao crescimento da demanda por esse tipo de tijolo, essa fábrica passou a ter 5 funcionários, cada um trabalhando 9 horas por dia, aumentando, assim, sua capacidade de produção. Todos os funcionários produzem igual quantidade de tijolos a cada hora, independentemente de trabalharem 6 ou 9 horas diárias.\nO número de tijolos fabricados diariamente após o aumento da capacidade de produção é",
+    "alternativas": [
+      "800.",
+      "1 080.",
+      "1 200.",
+      "1 800.",
+      "2 520."
+    ],
+    "correta": 3,
+    "explicacaoCerta": "A produção por hora de trabalho é 720 ÷ (3 × 6) = 40 tijolos. Com 5 funcionários trabalhando 9 horas, há 45 horas de trabalho por dia; 45 × 40 = 1 800 tijolos.",
+    "explicacoesErradas": [
+      "800 é menor que a produção calculada a partir das 45 horas de trabalho diárias à mesma produtividade de 40 tijolos por hora de trabalho.",
+      "1 080 considera apenas o fator de aumento das horas (de 6 para 9), sem incluir o aumento de 3 para 5 funcionários.",
+      "1 200 considera apenas o aumento do número de funcionários, sem incluir a passagem de 6 para 9 horas por dia.",
+      "",
+      "2 520 excede a produção compatível com 45 horas de trabalho diárias a 40 tijolos por hora de trabalho."
+    ]
+  }
+];
+
+    // Os temas históricos são do ENEM. Os textos de apoio são resumos autorais.
+    const temas = [
+      {tipo:"historico",ano:"2025",tema:"Perspectivas acerca do envelhecimento na sociedade brasileira",apoio1:"O aumento da expectativa de vida transforma as famílias, os serviços públicos e o trabalho. Uma sociedade que envelhece precisa considerar a participação, a autonomia e os direitos das pessoas idosas.",apoio2:"Preconceito, barreiras de acesso e falta de políticas adequadas podem ampliar desigualdades ao longo da vida.",palavras:["longevidade","autonomia","preconceito etário","acessibilidade","políticas públicas"]},
+      {tipo:"historico",ano:"2024",tema:"Desafios para a valorização da herança africana no Brasil",apoio1:"Saberes, tecnologias e expressões artísticas de matrizes africanas participam da formação histórica do Brasil.",apoio2:"Valorizar referências negras e narrativas plurais também contribui para o enfrentamento ao racismo.",palavras:["ancestralidade","representatividade","memória","patrimônio"]},
+      {tipo:"historico",ano:"2023",tema:"Desafios para o enfrentamento da invisibilidade do trabalho de cuidado realizado pela mulher no Brasil",apoio1:"Cuidar, ensinar e apoiar pessoas são atividades essenciais à vida, mesmo quando não recebem pagamento.",apoio2:"A divisão desigual do cuidado afeta o tempo, a renda e as oportunidades de quem assume essas tarefas.",palavras:["trabalho não remunerado","corresponsabilidade","equidade","reconhecimento"]},
+      {tipo:"historico",ano:"2022",tema:"Desafios para a valorização de comunidades e povos tradicionais no Brasil",apoio1:"Povos indígenas, quilombolas, ribeirinhos e outras comunidades mantêm relações próprias com território, memória e natureza.",apoio2:"Proteger territórios e respeitar formas de organização se relaciona à cultura e à cidadania.",palavras:["território","pluralidade","ancestralidade","direitos coletivos"]},
+      {tipo:"atualidade",ano:"Tema de treino",tema:"Os desafios da adaptação das cidades brasileiras às mudanças climáticas",apoio1:"Ondas de calor e chuvas intensas afetam as cidades de formas diferentes. Moradias precárias podem aumentar os riscos.",apoio2:"Arborização, drenagem e planejamento urbano são exemplos de ações que podem reduzir riscos.",palavras:["resiliência","prevenção","infraestrutura","justiça climática"]},
+      {tipo:"atualidade",ano:"Tema de treino",tema:"Caminhos para promover o uso responsável da inteligência artificial no Brasil",apoio1:"A inteligência artificial pode ajudar nos estudos e no trabalho, mas também levanta questões sobre privacidade e acesso.",apoio2:"Alfabetização digital e regras claras podem ajudar as pessoas a compreender limites e proteger seus dados.",palavras:["transparência","privacidade","responsabilidade","alfabetização digital"]},
+      {tipo:"atualidade",ano:"Tema de treino",tema:"Desafios para ampliar a inclusão digital de pessoas idosas no Brasil",apoio1:"Serviços de saúde, bancos e cidadania são cada vez mais acessados pela internet.",apoio2:"Apoio, acessibilidade e aprendizagem ajudam pessoas idosas a usar tecnologias com segurança.",palavras:["acessibilidade","autonomia","letramento digital","cidadania"]}
+    ];
+
+    const bancoSinonimos = {
+      importante:["relevante","fundamental","significativo","essencial"],
+      desafio:["obstáculo","dificuldade","impasse","problema"],
+      sociedade:["coletividade","comunidade","população","corpo social"],
+      impacto:["efeito","consequência","repercussão","influência"],
+      problema:["questão","dificuldade","impasse","entrave"],
+      solucao:["alternativa","medida","resposta","encaminhamento"],
+      necessario:["indispensável","essencial","urgente","preciso"],
+      promover:["incentivar","estimular","fomentar","favorecer"],
+      garantir:["assegurar","proteger","viabilizar","preservar"],
+      educacao:["ensino","formação","aprendizagem"],
+      saude:["bem-estar","condição física","saúde pública"],
+      acesso:["alcance","ingresso","possibilidade"],
+      inclusao:["participação","integração","acolhimento"],
+      desigualdade:["disparidade","assimetria","iniquidade"],
+      ambiente:["meio ambiente","natureza","ecossistema"],
+      tecnologia:["inovação","recurso digital","ferramenta tecnológica"],
+      envelhecimento:["longevidade","avanço da idade","processo de envelhecer"],
+      cuidado:["amparo","assistência","atenção"],
+      direitos:["garantias","prerrogativas","liberdades"],
+      cidadania:["participação social","exercício de direitos","civismo"],
+      violencia:["agressão","abuso","coerção"],
+      politica:["diretriz","medida","ação pública"]
+    };
+
+    // 2. VARIÁVEIS QUE GUARDAM O PROGRESSO DA PESSOA
+    const tela = document.getElementById("tela");
+    let perguntasDoTreino = [];
+    let indiceDaPergunta = 0;
+    let alternativaMarcada = -1;
+    let respostaConferida = false;
+    let acertos = 0;
+    let temaAtual = null;
+    let tipoDeTema = "historico";
+
+    // 3. PÁGINA INICIAL: ela mostra só os dois botões pedidos.
+    function mostrarInicio() {
+      tela.innerHTML = `
+        <section class="capa">
+          <div><div class="etiqueta">ESTUDO PARA O ENEM</div>
+            <h1>Um passo de cada vez.<br><em>Você chega lá.</em></h1>
+            <p>Escolha o que você quer estudar hoje.</p>
+          </div>
+          <div class="desenho" aria-hidden="true"><span class="selo">TRILHA<br><strong>ENEM<br>2022 — 2025</strong></span></div>
+        </section>
+        <section class="botoes-iniciais">
+          <button class="botao-grande" data-acao="abrir-redacao">
+            <span class="etiqueta">01 · ESCREVER</span><strong>Redação</strong>
+            <small>Escolha um tema e prepare seu texto.</small>
+          </button>
+          <button class="botao-grande" data-acao="abrir-outras">
+            <span class="etiqueta">02 · PRATICAR</span><strong>Outras matérias</strong>
+            <small>Treine com questões de provas anteriores.</small>
+          </button>
+        </section>
+      `;
+    }
+
+    function mostrarDuasOpcoesMateria() {
+      tela.innerHTML = `
+        <button class="voltar" data-acao="inicio">← Início</button>
+        <div class="etiqueta">OUTRAS MATÉRIAS</div>
+        <h1>Como quer <em>escolher?</em></h1>
+        <div class="grade-dois">
+          <button class="cartao-botao" data-acao="todas-materias"><span class="etiqueta">TREINO GERAL</span><strong>Todas</strong><span class="suave">Escolha o ano e veja questões das matérias disponíveis.</span></button>
+          <button class="cartao-botao" data-acao="escolher-materia"><span class="etiqueta">TREINO DIRECIONADO</span><strong>Escolher</strong><span class="suave">Escolha uma matéria e depois o ano da prova.</span></button>
+        </div>
+      `;
+    }
+
+    // No modo Todas, primeiro escolhemos o ano da prova.
+    function mostrarEscolhaDeAno() {
+      tela.innerHTML = `
+        <button class="voltar" data-acao="abrir-outras">← Outras matérias</button>
+        <div class="etiqueta">TODAS AS MATÉRIAS</div>
+        <h1>Escolha o ano das <em>questões.</em></h1>
+        <div class="campo"><label for="ano-todas">Ano da prova</label>
+          <select id="ano-todas"><option>2022</option><option>2023</option><option>2024</option><option>2025</option><option>Todos</option></select>
+        </div>
+        <p class="suave">Depois o site mostrará automaticamente quantas questões há de cada matéria e usará todas no treino.</p>
+        <button class="principal" data-acao="continuar-todas">Continuar →</button>
+      `;
+    }
+
+    // Depois do ano, mostramos a quantidade oficial disponível em cada matéria.
+    function mostrarResumoTodas(ano) {
+      const grupos = ["Linguagens","Ciências Humanas","Ciências da Natureza","Matemática"];
+      const listaCompleta = filtrarQuestoes(ano);
+      tela.innerHTML = `
+        <button class="voltar" data-acao="todas-materias">← Trocar ano</button>
+        <div class="etiqueta">ENEM ${ano}</div><h1>Questões de <em>todas as matérias</em></h1>
+        <div class="lista-materias">
+          ${grupos.map(function(grupo) { return materias.filter(function(m) { return m.area === grupo; }).map(function(m) {
+            const lista = filtrarQuestoes(ano, m.id);
+            return `<div class="linha-materia"><span>${m.nome}<small>${resumirQuestoes(lista)}</small></span></div>`;
+          }).join(""); }).join("")}
+        </div>
+        <p class="nota">O treino terá ${resumirQuestoes(listaCompleta)}. Ao começar, você resolverá todas as questões oficiais disponíveis para o ano escolhido.</p>
+        <button class="principal" data-acao="iniciar-todas" data-ano="${ano}" ${listaCompleta.length === 0 ? "disabled" : ""}>Começar treino →</button>
+      `;
+    }
+
+    function mostrarMateriasParaEscolher() {
+      const grupos = ["Linguagens","Ciências Humanas","Ciências da Natureza","Matemática"];
+      tela.innerHTML = `
+        <button class="voltar" data-acao="abrir-outras">← Outras matérias</button>
+        <div class="etiqueta">ESCOLHER MATÉRIA</div><h1>Selecione uma <em>matéria.</em></h1>
+        ${grupos.map(function(grupo) {
+          return `<section><h2>${grupo}</h2><div class="lista-materias">${materias.filter(function(m) { return m.area === grupo; }).map(function(m) {
+            return `<button class="materia-botao" data-acao="selecionar-materia" data-materia="${m.id}">${m.nome}</button>`;
+          }).join("")}</div></section>`;
+        }).join("")}
+      `;
+    }
+
+    function mostrarAnoDaMateria(idMateria) {
+      const materia = materias.find(function(m) { return m.id === idMateria; });
+      tela.innerHTML = `
+        <button class="voltar" data-acao="escolher-materia">← Matérias</button>
+        <div class="etiqueta">ESCOLHER MATÉRIA</div><h1>${materia.nome}</h1>
+        <div class="campo"><label for="ano-materia">Ano da prova</label>
+          <select id="ano-materia"><option>2022</option><option>2023</option><option>2024</option><option>2025</option><option>Todos</option></select>
+        </div>
+        <input id="materia-atual" type="hidden" value="${idMateria}">
+        <button class="principal" data-acao="continuar-materia">Continuar →</button>
+      `;
+    }
+
+    function mostrarResumoMateria(ano, idMateria) {
+      const materia = materias.find(function(m) { return m.id === idMateria; });
+      const lista = filtrarQuestoes(ano, idMateria);
+      const disponiveis = lista.length;
+      tela.innerHTML = `
+        <button class="voltar" data-acao="retornar-ano-materia" data-materia="${idMateria}">← Trocar ano</button>
+        <div class="etiqueta">${materia.nome} · ENEM ${ano}</div><h1>${resumirQuestoes(lista)}</h1>
+        <input id="materia-atual" type="hidden" value="${idMateria}">
+        <p class="nota">A quantidade é calculada automaticamente. Ao começar, você resolverá todas as questões oficiais disponíveis para ${materia.nome} no ano escolhido.</p>
+        <button class="principal" data-acao="iniciar-materia" data-ano="${ano}" data-materia="${idMateria}" ${disponiveis === 0 ? "disabled" : ""}>Começar treino →</button>
+      `;
+    }
+
+    // 4. QUESTÕES: começo, escolha, correção e explicação.
+    function filtrarQuestoes(ano, materia) {
+      return questoes.filter(function(questao) {
+        const anoServe = ano === "Todos" || questao.ano === ano;
+        const materiaServe = !materia || questao.materia === materia;
+        return anoServe && materiaServe;
+      });
+    }
+
+    // Mostra o total e, se as questões estiverem em sequência, o intervalo delas.
+    function resumirQuestoes(lista) {
+      const total = lista.length;
+      if (total === 0) return "0 questões oficiais disponíveis";
+      const numeros = lista.map(function(q) { return Number(q.numero); }).filter(Number.isFinite).sort(function(a,b) { return a-b; });
+      const texto = total === 1 ? "1 questão oficial" : `${total} questões oficiais`;
+      if (numeros.length === 1) return `${texto} · Q${numeros[0]}`;
+      if (numeros.length === total && numeros[numeros.length-1] - numeros[0] + 1 === total) {
+        return `${texto} · Q${numeros[0]}–Q${numeros[numeros.length-1]}`;
+      }
+      return `${texto} disponíveis`;
+    }
+
+    function iniciarQuestoes(lista) {
+      const selecionadas = lista;
+      if (selecionadas.length === 0) {
+        alert("Ainda não há questão oficial verificada para essa escolha. Tente outro ano.");
+        return;
+      }
+      perguntasDoTreino = selecionadas;
+      indiceDaPergunta = 0;
+      acertos = 0;
+      mostrarPergunta();
+    }
+
+    function mostrarPergunta() {
+      alternativaMarcada = -1;
+      respostaConferida = false;
+      const pergunta = perguntasDoTreino[indiceDaPergunta];
+      const materia = materias.find(function(m) { return m.id === pergunta.materia; });
+      tela.innerHTML = `
+        <button class="voltar" data-acao="inicio">← Sair do treino</button>
+        <div class="barra-progresso">Questão ${indiceDaPergunta + 1} de ${perguntasDoTreino.length} · ${materia.nome} · ENEM ${pergunta.ano}</div>
+        <section class="cartao questao">
+          <div class="etiqueta">${pergunta.assunto} · Questão ${pergunta.numero}</div>
+          <div class="enunciado">${proteger(pergunta.enunciado)}</div>
+          <div class="alternativas">${pergunta.alternativas.map(function(texto, indice) {
+            return `<button class="alternativa" data-acao="marcar" data-indice="${indice}"><span class="letra">${String.fromCharCode(65 + indice)}</span>${proteger(texto)}</button>`;
+          }).join("")}</div>
+          <div id="explicacao" aria-live="polite"></div>
+          <p class="suave"><small>Fonte: <a href="${pergunta.prova}" target="_blank" rel="noreferrer">caderno oficial do Inep</a> · <a href="${pergunta.gabarito}" target="_blank" rel="noreferrer">gabarito oficial</a></small></p>
+          <div class="botoes" id="acoes-questao"><button class="principal" data-acao="conferir">Conferir resposta</button></div>
+        </section>
+      `;
+    }
+
+    function conferirResposta() {
+      if (alternativaMarcada < 0) { alert("Escolha uma alternativa antes de conferir."); return; }
+      respostaConferida = true;
+      const pergunta = perguntasDoTreino[indiceDaPergunta];
+      document.querySelectorAll(".alternativa").forEach(function(botao, indice) {
+        if (indice === pergunta.correta) botao.classList.add("certa");
+        if (indice === alternativaMarcada && indice !== pergunta.correta) botao.classList.add("errada");
+        botao.disabled = true;
+      });
+      const area = document.getElementById("explicacao");
+      if (alternativaMarcada === pergunta.correta) {
+        acertos++;
+        area.innerHTML = `<div class="explicacao"><strong>Correta!</strong><br>${proteger(pergunta.explicacaoCerta)}</div>`;
+      } else {
+        const letraEscolhida = String.fromCharCode(65 + alternativaMarcada);
+        const letraCerta = String.fromCharCode(65 + pergunta.correta);
+        area.innerHTML = `<div class="explicacao erro"><strong>Você marcou ${letraEscolhida}.</strong> ${proteger(pergunta.explicacoesErradas[alternativaMarcada])}<br><br><strong>A resposta certa é ${letraCerta}.</strong> ${proteger(pergunta.explicacaoCerta)}</div>`;
+      }
+      const textoBotao = indiceDaPergunta === perguntasDoTreino.length - 1 ? "Ver resultado" : "Próxima questão";
+      document.getElementById("acoes-questao").innerHTML = `<button class="principal" data-acao="proxima">${textoBotao} →</button>`;
+    }
+
+    function proximaQuestao() {
+      indiceDaPergunta++;
+      if (indiceDaPergunta === perguntasDoTreino.length) {
+        tela.innerHTML = `<section class="cartao resultado"><div class="etiqueta">FIM DO TREINO</div><h1>Você acertou ${acertos} de ${perguntasDoTreino.length}.</h1><p class="suave">Cada questão ajuda a perceber o que vale revisar.</p><button class="principal" data-acao="inicio">Voltar ao início</button></section>`;
+      } else mostrarPergunta();
+    }
+
+    // 5. REDAÇÃO: temas antigos ou sugestões ligadas à atualidade.
+    function mostrarTiposDeRedacao() {
+      tela.innerHTML = `
+        <button class="voltar" data-acao="inicio">← Início</button>
+        <div class="etiqueta">REDAÇÃO</div><h1>Escolha o tipo de <em>tema.</em></h1>
+        <div class="grade-dois">
+          <button class="cartao-botao" data-acao="temas-antigos"><span class="etiqueta">TEMAS OFICIAIS</span><strong>Temas de redações de anos passados</strong><span class="suave">Veja os temas que já foram usados no ENEM.</span></button>
+          <button class="cartao-botao" data-acao="temas-atuais"><span class="etiqueta">PROPOSTAS DE TREINO</span><strong>Temas criados conforme acontecimentos atuais</strong><span class="suave">Ideias autorais para praticar; não são previsões do Inep.</span></button>
+        </div>
+      `;
+    }
+
+    function mostrarListaDeTemas(tipo) {
+      tipoDeTema = tipo;
+      const lista = temas.filter(function(tema) { return tema.tipo === tipo; });
+      const titulo = tipo === "historico" ? "Temas de anos passados" : "Temas de atualidades";
+      tela.innerHTML = `
+        <button class="voltar" data-acao="abrir-redacao">← Tipos de tema</button>
+        <div class="etiqueta">REDAÇÃO</div><h1>${titulo}</h1>
+        <div class="temas">${lista.map(function(tema) {
+          return `<button class="tema-botao" data-acao="abrir-tema" data-indice="${temas.indexOf(tema)}"><small>${tema.ano === "Tema de treino" ? tema.ano.toUpperCase() : "ENEM " + tema.ano}</small><strong>${tema.tema}</strong><small>Ver proposta →</small></button>`;
+        }).join("")}</div>
+      `;
+    }
+
+    function mostrarProposta(indice) {
+      temaAtual = temas[indice];
+      const chave = "rascunho-enem-" + indice;
+      const textoSalvo = localStorage.getItem(chave) || "";
+      tela.innerHTML = `
+        <button class="voltar" data-acao="voltar-temas">← Voltar aos temas</button>
+        <div class="etiqueta">${temaAtual.ano === "Tema de treino" ? "PROPOSTA AUTORAL DE ATUALIDADES" : "TEMA OFICIAL · ENEM " + temaAtual.ano}</div>
+        <h1>${temaAtual.tema}</h1>
+        <div class="redacao-grid">
+          <div>
+            <section class="cartao"><h2>Textos motivadores</h2>
+              <article class="texto-apoio"><h3>Texto 1</h3><p>${temaAtual.apoio1}</p></article>
+              <article class="texto-apoio"><h3>Texto 2</h3><p>${temaAtual.apoio2}</p></article>
+              <p class="suave"><small>Resumos autorais para estudo; não são cópias dos cadernos oficiais.</small></p>
+            </section>
+            <section class="secao"><h2>Seu rascunho</h2>
+              <textarea id="rascunho" placeholder="Comece por uma ideia, uma pergunta ou uma observação...">${proteger(textoSalvo)}</textarea>
+              <p class="suave"><small><span id="contador">0</span> palavras. O texto fica salvo neste navegador.</small></p>
+            </section>
+          </div>
+          <aside class="painel-lateral">
+            <section class="cartao"><h3>Palavras para começar</h3><p class="suave"><small>Clique em uma palavra para colocá-la no rascunho.</small></p>
+              <div class="palavras">${temaAtual.palavras.map(function(palavra) { return `<button data-acao="acrescentar" data-texto="${proteger(palavra)}">${palavra} +</button>`; }).join("")}</div>
+            </section>
+            <section class="cartao"><h3>Sinônimo</h3><p class="suave"><small>Escreva à esquerda. O sinônimo aparece à direita.</small></p>
+              <div class="sinonimo-colunas">
+                <div><input id="palavra" aria-label="Palavra para procurar sinônimo" placeholder="Ex.: importante"><button data-acao="buscar-sinonimo">Achar sinônimo</button></div>
+                <div class="resultado-sinonimo" id="resultado-sinonimo" aria-live="polite">O resultado aparece aqui.</div>
+              </div>
+            </section>
+          </aside>
+        </div>
+      `;
+      atualizarContagem();
+    }
+
+    function buscarSinonimo() {
+      const campo = document.getElementById("palavra");
+      const resultado = document.getElementById("resultado-sinonimo");
+      const palavra = campo.value.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9\s-]/g, "").trim();
+      const lista = bancoSinonimos[palavra];
+      if (!palavra) { resultado.textContent = "Escreva uma palavra primeiro."; return; }
+      if (!lista) { resultado.textContent = "Ainda não há sinônimo cadastrado para essa palavra. Tente outra palavra comum de redação."; return; }
+      resultado.innerHTML = lista.map(function(item) {
+        return `<button data-acao="acrescentar" data-texto="${proteger(item)}">${item} +</button>`;
+      }).join("");
+    }
+
+    function acrescentarNoRascunho(texto) {
+      const campo = document.getElementById("rascunho");
+      if (!campo) return;
+      campo.value += (campo.value && !campo.value.endsWith(" ") ? " " : "") + texto;
+      campo.dispatchEvent(new Event("input", {bubbles:true}));
+      campo.focus();
+    }
+
+    function atualizarContagem() {
+      const campo = document.getElementById("rascunho");
+      const contador = document.getElementById("contador");
+      if (!campo || !contador) return;
+      contador.textContent = campo.value.trim().split(/\s+/).filter(Boolean).length;
+    }
+
+    // Protege texto antes de colocá-lo dentro de HTML.
+    function proteger(texto) {
+      return String(texto).replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;");
+    }
+
+    // 6. CLIQUES: cada botão informa sua ação com data-acao.
+    document.addEventListener("click", function(evento) {
+      const botao = evento.target.closest("button");
+      if (!botao) return;
+      const acao = botao.dataset.acao;
+
+      if (acao === "inicio") mostrarInicio();
+      if (acao === "abrir-outras") mostrarDuasOpcoesMateria();
+      if (acao === "todas-materias") mostrarEscolhaDeAno();
+      if (acao === "escolher-materia") mostrarMateriasParaEscolher();
+      if (acao === "selecionar-materia") mostrarAnoDaMateria(botao.dataset.materia);
+      if (acao === "continuar-todas") mostrarResumoTodas(document.getElementById("ano-todas").value);
+      if (acao === "continuar-materia") {
+        mostrarResumoMateria(document.getElementById("ano-materia").value, document.getElementById("materia-atual").value);
+      }
+      if (acao === "retornar-ano-materia") mostrarAnoDaMateria(botao.dataset.materia);
+      if (acao === "iniciar-todas") iniciarQuestoes(filtrarQuestoes(botao.dataset.ano));
+      if (acao === "iniciar-materia") iniciarQuestoes(filtrarQuestoes(botao.dataset.ano, botao.dataset.materia));
+      if (acao === "marcar" && !respostaConferida) {
+        alternativaMarcada = Number(botao.dataset.indice);
+        document.querySelectorAll(".alternativa").forEach(function(item) { item.classList.remove("selecionada"); });
+        botao.classList.add("selecionada");
+      }
+      if (acao === "conferir") conferirResposta();
+      if (acao === "proxima") proximaQuestao();
+      if (acao === "abrir-redacao") mostrarTiposDeRedacao();
+      if (acao === "temas-antigos") mostrarListaDeTemas("historico");
+      if (acao === "temas-atuais") mostrarListaDeTemas("atualidade");
+      if (acao === "abrir-tema") mostrarProposta(Number(botao.dataset.indice));
+      if (acao === "voltar-temas") mostrarListaDeTemas(tipoDeTema);
+      if (acao === "buscar-sinonimo") buscarSinonimo();
+      if (acao === "acrescentar") acrescentarNoRascunho(botao.dataset.texto);
+    });
+
+    // Salva o rascunho enquanto a pessoa digita.
+    document.addEventListener("input", function(evento) {
+      if (evento.target.id === "rascunho" && temaAtual) {
+        const indice = temas.indexOf(temaAtual);
+        localStorage.setItem("rascunho-enem-" + indice, evento.target.value);
+        atualizarContagem();
+      }
+    });
+
+    mostrarInicio();
+  </script>
+</body>
+</html>
